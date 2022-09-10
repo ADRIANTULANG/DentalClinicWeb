@@ -1,9 +1,8 @@
 import 'package:dentalclinic/pages/dashboard_screen/controller/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../configs/class_sizer.dart';
-import '../../clinic_documents_screen/view/clinic_documents_view.dart';
+import '../../billing_details_screen/view/billing_details_view.dart';
 
 class DashboardBillingMonitoringView extends GetView<DashboardController> {
   const DashboardBillingMonitoringView({Key? key}) : super(key: key);
@@ -189,20 +188,23 @@ class DashboardBillingMonitoringView extends GetView<DashboardController> {
                             bottom: Sizer.height(context: context, size: 3)),
                         child: InkWell(
                           onTap: () {
-                            Get.to(() => ClinicDocuments(), arguments: {
-                              'dentalClinicID': controller
+                            Get.to(() => BillingDetailsView(), arguments: {
+                              "clinicID": controller
                                   .clinic_subscribe_list[index].clinicId,
-                              'dentalClinicName': controller
+                              'clinicName': controller
                                   .clinic_subscribe_list[index].clinicName,
-                              'dentalClinicDentist': controller
+                              'clinicDentist': controller
                                   .clinic_subscribe_list[index]
                                   .clinicDentistName,
-                              'dentalClinicAddress': controller
+                              'clinicAddress': controller
                                   .clinic_subscribe_list[index].clinicAddress,
-                              'dentalClinicContactNumber': controller
+                              'clinicContact': controller
                                   .clinic_subscribe_list[index].clinicContactNo,
-                              'dentalClinicEmail': controller
+                              'clinicEmail': controller
                                   .clinic_subscribe_list[index].clinicEmail,
+                              'clinicTotalPayment': controller
+                                  .clinic_subscribe_list[index]
+                                  .subscriptionAmount,
                             });
                           },
                           child: Row(

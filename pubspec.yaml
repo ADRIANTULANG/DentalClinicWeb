@@ -37,6 +37,8 @@ dependencies:
   get_storage: ^2.0.3
   #flutter_launcher_icons
   flutter_launcher_icons: ^0.10.0
+  #intl
+  intl: ^0.17.0
 
 flutter_icons:
   web:
