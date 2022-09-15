@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'PlayRec',
+      title: 'DCAMS',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),

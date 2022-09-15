@@ -151,16 +151,6 @@ class DashboardBillingMonitoringView extends GetView<DashboardController> {
                       child: Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Clinic Documents",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    Sizer.fontsize(context: context, size: 15)),
-                          ))),
-                  Expanded(
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
                             "Amount",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -233,17 +223,6 @@ class DashboardBillingMonitoringView extends GetView<DashboardController> {
                                       child: Text(
                                         controller.clinic_subscribe_list[index]
                                             .clinicAddress,
-                                      ))),
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: InkWell(
-                                        onTap: () {},
-                                        child: Icon(
-                                          Icons.folder,
-                                          size: Sizer.fontsize(
-                                              context: context, size: 25),
-                                        ),
                                       ))),
                               Expanded(
                                   child: Container(
