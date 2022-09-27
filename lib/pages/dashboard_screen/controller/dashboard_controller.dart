@@ -17,18 +17,21 @@ class DashboardController extends GetxController {
       <ClinicSubscribedModel>[].obs;
   RxList<ClinicSubscribedModel> clinic_subscribe_masterList =
       <ClinicSubscribedModel>[].obs;
+  RxList<Transactions> transactions = <Transactions>[].obs;
+  RxList<Transactions> transactions_masterListt = <Transactions>[].obs;
 
   TextEditingController approvedTextEditing = TextEditingController();
   TextEditingController pendingTextEditing = TextEditingController();
   TextEditingController clientTextEdditing = TextEditingController();
   TextEditingController clinicSubscribeEditing = TextEditingController();
-
+  TextEditingController transactionsTextEditing = TextEditingController();
   @override
   void onInit() {
     getPendingDentalClinic();
     getApprovedDentalClinic();
     getClients();
     getSubscribedClinics();
+    getTransactions();
     super.onInit();
   }
 
@@ -38,12 +41,14 @@ class DashboardController extends GetxController {
   }
 
   RxDouble totalBalance = 0.0.obs;
+  RxDouble totaltransactionBalance = 0.0.obs;
 
   RxBool isApprovalSelected = true.obs;
   RxBool isClinicSelected = false.obs;
   RxBool isClientSelected = false.obs;
   RxBool isCredentialSelected = false.obs;
   RxBool isBillingMonitoringSelected = false.obs;
+  RxBool isTransactionSelected = false.obs;
 
   TextEditingController account_name = TextEditingController();
   TextEditingController account_username = TextEditingController();
@@ -58,6 +63,30 @@ class DashboardController extends GetxController {
     dentalClinic_approved
         .assignAll(await DashboardApi.getApprovedDentalClinic());
     dentalClinic_approved_masterList.assignAll(dentalClinic_approved);
+  }
+
+  getTransactions() async {
+    var result = await DashboardApi.getTransactions();
+    transactions.assignAll(result);
+    transactions_masterListt.assignAll(result);
+
+    for (var i = 0; i < transactions_masterListt.length; i++) {
+      totaltransactionBalance.value = totaltransactionBalance.value +
+          double.parse(transactions_masterListt[i].resFee);
+    }
+  }
+
+  searchTransactions({required String value}) {
+    if (value.isEmpty || value.trim().toString() == "") {
+      transactions.assignAll(transactions_masterListt);
+    } else {
+      transactions.assignAll(transactions_masterListt
+          .where((u) => (u.client_name
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase())))
+          .toList());
+    }
   }
 
   getSubscribedClinics() async {

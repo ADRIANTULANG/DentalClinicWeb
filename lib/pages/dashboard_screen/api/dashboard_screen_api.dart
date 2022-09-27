@@ -336,4 +336,49 @@ class DashboardApi {
       return [];
     }
   }
+
+//
+  static Future<List<Transactions>> getTransactions() async {
+    try {
+      var response = await client.post(
+        Uri.parse('${AppEndpoint.endPointDomain}/get-transactions-all.php'),
+        body: {},
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return TransactionsFromJson(
+            jsonEncode(jsonDecode(response.body)['data']));
+      } else {
+        return [];
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Get getTransactions Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Get getTransactions Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } catch (e) {
+      Get.snackbar(
+        "Get getTransactions Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    }
+  }
 }

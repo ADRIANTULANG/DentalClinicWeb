@@ -8,6 +8,7 @@ import '../controller/dashboard_controller.dart';
 import '../widget/dashboard_approval_view.dart';
 import '../widget/dashboard_billing_view.dart';
 import '../widget/dashboard_clients_view.dart';
+import '../widget/dashboard_transaction_view.dart';
 import '../widget/dashboard_update_credentials_view.dart';
 
 class DashBoardView extends GetView<DashboardController> {
@@ -72,6 +73,7 @@ class DashBoardView extends GetView<DashboardController> {
                               controller.isClinicSelected.value = false;
                               controller.isBillingMonitoringSelected.value =
                                   false;
+                              controller.isTransactionSelected.value = false;
                             },
                             child: Obx(
                               () => Container(
@@ -117,6 +119,7 @@ class DashBoardView extends GetView<DashboardController> {
                               controller.isClinicSelected.value = true;
                               controller.isBillingMonitoringSelected.value =
                                   false;
+                              controller.isTransactionSelected.value = false;
                             },
                             child: Obx(
                               () => Container(
@@ -162,6 +165,7 @@ class DashBoardView extends GetView<DashboardController> {
                               controller.isClinicSelected.value = false;
                               controller.isBillingMonitoringSelected.value =
                                   false;
+                              controller.isTransactionSelected.value = false;
                             },
                             child: Obx(
                               () => Container(
@@ -207,6 +211,7 @@ class DashBoardView extends GetView<DashboardController> {
                               controller.isClinicSelected.value = false;
                               controller.isBillingMonitoringSelected.value =
                                   true;
+                              controller.isTransactionSelected.value = false;
                             },
                             child: Obx(
                               () => Container(
@@ -247,12 +252,60 @@ class DashBoardView extends GetView<DashboardController> {
                           ),
                           child: InkWell(
                             onTap: () {
+                              controller.isCredentialSelected.value = false;
+                              controller.isApprovalSelected.value = false;
+                              controller.isClientSelected.value = false;
+                              controller.isClinicSelected.value = false;
+                              controller.isBillingMonitoringSelected.value =
+                                  false;
+                              controller.isTransactionSelected.value = true;
+                            },
+                            child: Obx(
+                              () => Container(
+                                height: Sizer.height(context: context, size: 7),
+                                width: Sizer.width(context: context, size: 100),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color:
+                                      controller.isTransactionSelected.value ==
+                                              true
+                                          ? Colors.green[700]
+                                          : Colors.white,
+                                ),
+                                padding: EdgeInsets.only(
+                                    left: Sizer.width(
+                                        context: context, size: 3.5)),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Transactions",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black,
+                                      letterSpacing: 2,
+                                      fontSize: Sizer.fontsize(
+                                          context: context, size: 20)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: Sizer.height(context: context, size: 1),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.01,
+                            right: MediaQuery.of(context).size.width * 0.01,
+                          ),
+                          child: InkWell(
+                            onTap: () {
                               controller.isCredentialSelected.value = true;
                               controller.isApprovalSelected.value = false;
                               controller.isClientSelected.value = false;
                               controller.isClinicSelected.value = false;
                               controller.isBillingMonitoringSelected.value =
                                   false;
+                              controller.isTransactionSelected.value = false;
 
                               controller.account_name.text =
                                   Get.find<StorageServices>()
@@ -414,7 +467,10 @@ class DashBoardView extends GetView<DashboardController> {
                                             .value ==
                                         true
                                     ? DashboardBillingMonitoringView()
-                                    : DashboardCredentialsView()),
+                                    : controller.isTransactionSelected.value ==
+                                            true
+                                        ? DashboardTransactionView()
+                                        : DashboardCredentialsView()),
                   ],
                 ),
               ),
