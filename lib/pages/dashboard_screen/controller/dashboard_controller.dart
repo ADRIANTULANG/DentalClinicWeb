@@ -55,14 +55,15 @@ class DashboardController extends GetxController {
   TextEditingController account_password = TextEditingController();
 
   getPendingDentalClinic() async {
-    dentalClinic_pending.assignAll(await DashboardApi.getPendingDentalCare());
-    dentalClinic_pending_masterList.assignAll(dentalClinic_pending);
+    var result = await DashboardApi.getPendingDentalCare();
+    dentalClinic_pending.assignAll(result.reversed.toList());
+    dentalClinic_pending_masterList.assignAll(result.reversed.toList());
   }
 
   getApprovedDentalClinic() async {
-    dentalClinic_approved
-        .assignAll(await DashboardApi.getApprovedDentalClinic());
-    dentalClinic_approved_masterList.assignAll(dentalClinic_approved);
+    var result = await DashboardApi.getApprovedDentalClinic();
+    dentalClinic_approved.assignAll(result.reversed.toList());
+    dentalClinic_approved_masterList.assignAll(result.reversed.toList());
   }
 
   getTransactions() async {
@@ -90,9 +91,9 @@ class DashboardController extends GetxController {
   }
 
   getSubscribedClinics() async {
-    clinic_subscribe_list.assignAll(await DashboardApi.getSubscribedClinic());
-    clinic_subscribe_masterList.assignAll(clinic_subscribe_list);
-
+    var result = await DashboardApi.getSubscribedClinic();
+    clinic_subscribe_list.assignAll(result.reversed.toList());
+    clinic_subscribe_masterList.assignAll(result.reversed.toList());
     for (var i = 0; i < clinic_subscribe_masterList.length; i++) {
       totalBalance.value = totalBalance.value +
           double.parse(clinic_subscribe_masterList[i].subscriptionAmount);
@@ -101,7 +102,7 @@ class DashboardController extends GetxController {
 
   getClients() async {
     clients.assignAll(await DashboardApi.getClients());
-    clients_masterList.assignAll(clients);
+    clients_masterList.assignAll(clients.reversed.toList());
   }
 
   searchClinicPending({required String value}) {

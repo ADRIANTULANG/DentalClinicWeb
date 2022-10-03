@@ -32,7 +32,9 @@ class ClinicDocumentsController extends GetxController {
 
   getDocuments() async {
     print("clinicID: ${dentalClinicID.value}");
-    clinicDocumentsList.assignAll(await ClinicDocumentsApi.getClinicDocuments(
-        clinicID: dentalClinicID.value));
+
+    var result = await await ClinicDocumentsApi.getClinicDocuments(
+        clinicID: dentalClinicID.value);
+    clinicDocumentsList.assignAll(result.reversed.toList());
   }
 }

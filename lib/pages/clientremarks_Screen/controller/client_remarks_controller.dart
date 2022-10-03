@@ -23,7 +23,7 @@ class ClientReemarksController extends GetxController {
 
   getRemarsk() async {
     var result = await ClientRemarksApi.getRemarks(clientID: clinicID.value);
-    remarkslist.assignAll(result);
-    remarkslistMasterList.assignAll(result);
+    remarkslist.assignAll(result.reversed.toList());
+    remarkslistMasterList.assignAll(result.reversed.toList());
   }
 }
