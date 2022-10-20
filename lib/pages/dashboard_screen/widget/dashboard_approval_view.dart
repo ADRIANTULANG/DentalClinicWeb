@@ -36,6 +36,7 @@ class DashboardApprovalView extends GetView<DashboardController> {
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       "Clinic Approval",
@@ -80,6 +81,37 @@ class DashboardApprovalView extends GetView<DashboardController> {
                                     Sizer.fontsize(context: context, size: 9))),
                       ),
                     ),
+                    InkWell(
+                      onTap: () async {
+                        controller.isRefreshingPending(true);
+                        await controller.getPendingDentalClinic();
+                        controller.isRefreshingPending(false);
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 153, 211, 238),
+                        radius: Sizer.width(context: context, size: 1),
+                        child: Obx(
+                          () => controller.isRefreshingPending.value == true
+                              ? Container(
+                                  width:
+                                      Sizer.width(context: context, size: .8),
+                                  height:
+                                      Sizer.height(context: context, size: 1.8),
+                                  alignment: Alignment.center,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.refresh,
+                                  color: Colors.black,
+                                ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

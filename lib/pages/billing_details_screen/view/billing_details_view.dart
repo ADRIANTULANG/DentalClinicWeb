@@ -20,11 +20,30 @@ class BillingDetailsView extends GetView<BillingDetailsController> {
                   left: Sizer.width(context: context, size: 1.5),
                   top: Sizer.height(context: context, size: 3)),
               width: Sizer.width(context: context, size: 100),
-              child: IconButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(Icons.arrow_back_ios_outlined)),
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(Icons.arrow_back_ios_outlined)),
+                  SizedBox(
+                    width: Sizer.width(context: context, size: .5),
+                  ),
+                  Obx(
+                    () => controller.isRefreshing.value == true
+                        ? SizedBox()
+                        : IconButton(
+                            onPressed: () async {
+                              controller.isRefreshing(true);
+                              await controller.getClinicBillingDetails(
+                                  clinicID: controller.clinicID.value);
+                              controller.isRefreshing(false);
+                            },
+                            icon: Icon(Icons.refresh_rounded)),
+                  ),
+                ],
+              ),
             ),
             Container(
               padding: EdgeInsets.only(
@@ -55,21 +74,21 @@ class BillingDetailsView extends GetView<BillingDetailsController> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: Sizer.width(context: context, size: 1.1),
-                          ),
-                          child: Obx(
-                            () => Text(
-                              controller.clinicDentist.value,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: Sizer.fontsize(
-                                      context: context, size: 20),
-                                  letterSpacing: 2),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //     left: Sizer.width(context: context, size: 1.1),
+                        //   ),
+                        //   child: Obx(
+                        //     () => Text(
+                        //       controller.clinicDentist.value,
+                        //       style: TextStyle(
+                        //           fontWeight: FontWeight.w600,
+                        //           fontSize: Sizer.fontsize(
+                        //               context: context, size: 20),
+                        //           letterSpacing: 2),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: Sizer.height(context: context, size: 2),
                         ),

@@ -75,38 +75,75 @@ class DashboardBillingMonitoringView extends GetView<DashboardController> {
               SizedBox(
                 height: Sizer.height(context: context, size: 2),
               ),
-              Container(
-                height: Sizer.height(context: context, size: 6),
-                width: Sizer.width(context: context, size: 100),
-                child: TextField(
-                  controller: controller.clinicSubscribeEditing,
-                  obscureText: false,
-                  onChanged: (value) {
-                    controller.searchSubscribeClinic(
-                        value: controller.clinicSubscribeEditing.text);
-                  },
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            controller.clinicSubscribeEditing.clear();
-                            FocusScope.of(context).unfocus();
-                            controller.clinic_subscribe_list.assignAll(
-                                controller.clinic_subscribe_masterList);
-                          },
-                          icon: Icon(Icons.clear)),
-                      contentPadding: EdgeInsets.only(
-                          bottom: Sizer.height(context: context, size: 1),
-                          left: Sizer.width(context: context, size: 1)),
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9)),
-                      labelText: 'Search Clinic',
-                      // hintText: 'Enter Clinic Name',
-                      hintStyle: TextStyle(
-                          fontSize: Sizer.fontsize(context: context, size: 9)),
-                      labelStyle: TextStyle(
-                          fontSize: Sizer.fontsize(context: context, size: 9))),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: Sizer.height(context: context, size: 6),
+                    width: Sizer.width(context: context, size: 60),
+                    child: TextField(
+                      controller: controller.clinicSubscribeEditing,
+                      obscureText: false,
+                      onChanged: (value) {
+                        controller.searchSubscribeClinic(
+                            value: controller.clinicSubscribeEditing.text);
+                      },
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                controller.clinicSubscribeEditing.clear();
+                                FocusScope.of(context).unfocus();
+                                controller.clinic_subscribe_list.assignAll(
+                                    controller.clinic_subscribe_masterList);
+                              },
+                              icon: Icon(Icons.clear)),
+                          contentPadding: EdgeInsets.only(
+                              bottom: Sizer.height(context: context, size: 1),
+                              left: Sizer.width(context: context, size: 1)),
+                          alignLabelWithHint: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(9)),
+                          labelText: 'Search Clinic',
+                          // hintText: 'Enter Clinic Name',
+                          hintStyle: TextStyle(
+                              fontSize:
+                                  Sizer.fontsize(context: context, size: 9)),
+                          labelStyle: TextStyle(
+                              fontSize:
+                                  Sizer.fontsize(context: context, size: 9))),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      controller.isRefreshingBilling(true);
+                      await controller.getSubscribedClinics();
+                      controller.isRefreshingBilling(false);
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Color.fromARGB(255, 153, 211, 238),
+                      radius: Sizer.width(context: context, size: 1),
+                      child: Obx(
+                        () => controller.isRefreshingBilling.value == true
+                            ? Container(
+                                width: Sizer.width(context: context, size: .8),
+                                height:
+                                    Sizer.height(context: context, size: 1.8),
+                                alignment: Alignment.center,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : Icon(
+                                Icons.refresh,
+                                color: Colors.black,
+                              ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               SizedBox(
                 height: Sizer.height(context: context, size: 2),

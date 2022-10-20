@@ -14,6 +14,7 @@ class BillingDetailsController extends GetxController {
   RxString clinicTotalPayment = "".obs;
 
   RxBool isLoading = true.obs;
+  RxBool isRefreshing = false.obs;
   @override
   void onInit() async {
     clinicID.value = await Get.arguments['clinicID'];

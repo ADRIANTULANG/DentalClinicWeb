@@ -23,13 +23,47 @@ class ClientRemarskView extends GetView<ClientReemarksController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Obx(
-              () => Text(
-                "Records of ${controller.clientName.value}",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: Sizer.fontsize(context: context, size: 20)),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Obx(
+                  () => Text(
+                    "Records of ${controller.clientName.value}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: Sizer.fontsize(context: context, size: 20)),
+                  ),
+                ),
+                InkWell(
+                  onTap: () async {
+                    controller.isRefreshingRemarks(true);
+                    await controller.getRemarsk();
+                    controller.isRefreshingRemarks(false);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 153, 211, 238),
+                    radius: Sizer.width(context: context, size: 1),
+                    child: Obx(
+                      () => controller.isRefreshingRemarks.value == true
+                          ? Container(
+                              width: Sizer.width(context: context, size: .8),
+                              height: Sizer.height(context: context, size: 1.8),
+                              alignment: Alignment.center,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : Icon(
+                              Icons.refresh,
+                              color: Colors.black,
+                            ),
+                    ),
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: Sizer.height(context: context, size: 2),

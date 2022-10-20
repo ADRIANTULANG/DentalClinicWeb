@@ -50,6 +50,12 @@ class DashboardController extends GetxController {
   RxBool isBillingMonitoringSelected = false.obs;
   RxBool isTransactionSelected = false.obs;
 
+  RxBool isRefreshingPending = false.obs;
+  RxBool isRefreshingApproved = false.obs;
+  RxBool isRefreshingClients = false.obs;
+  RxBool isRefreshingBilling = false.obs;
+  RxBool isRefreshingTransactions = false.obs;
+
   TextEditingController account_name = TextEditingController();
   TextEditingController account_username = TextEditingController();
   TextEditingController account_password = TextEditingController();
@@ -68,9 +74,9 @@ class DashboardController extends GetxController {
 
   getTransactions() async {
     var result = await DashboardApi.getTransactions();
-    transactions.assignAll(result);
-    transactions_masterListt.assignAll(result);
-
+    transactions.assignAll(result.reversed.toList());
+    transactions_masterListt.assignAll(result.reversed.toList());
+    totaltransactionBalance.value = 0.0;
     for (var i = 0; i < transactions_masterListt.length; i++) {
       totaltransactionBalance.value = totaltransactionBalance.value +
           double.parse(transactions_masterListt[i].resFee);
@@ -94,6 +100,7 @@ class DashboardController extends GetxController {
     var result = await DashboardApi.getSubscribedClinic();
     clinic_subscribe_list.assignAll(result.reversed.toList());
     clinic_subscribe_masterList.assignAll(result.reversed.toList());
+    totalBalance.value = 0.0;
     for (var i = 0; i < clinic_subscribe_masterList.length; i++) {
       totalBalance.value = totalBalance.value +
           double.parse(clinic_subscribe_masterList[i].subscriptionAmount);
@@ -101,8 +108,9 @@ class DashboardController extends GetxController {
   }
 
   getClients() async {
-    clients.assignAll(await DashboardApi.getClients());
-    clients_masterList.assignAll(clients.reversed.toList());
+    var result = await DashboardApi.getClients();
+    clients.assignAll(result.reversed.toList());
+    clients_masterList.assignAll(result.reversed.toList());
   }
 
   searchClinicPending({required String value}) {

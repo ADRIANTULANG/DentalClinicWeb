@@ -69,21 +69,21 @@ class ClinicDocuments extends GetView<ClinicDocumentsController> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: Sizer.width(context: context, size: 1.1),
-                            ),
-                            child: Obx(
-                              () => Text(
-                                controller.dentalClinicDentist.value,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: Sizer.fontsize(
-                                        context: context, size: 20),
-                                    letterSpacing: 2),
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.only(
+                          //     left: Sizer.width(context: context, size: 1.1),
+                          //   ),
+                          //   child: Obx(
+                          //     () => Text(
+                          //       controller.dentalClinicDentist.value,
+                          //       style: TextStyle(
+                          //           fontWeight: FontWeight.w600,
+                          //           fontSize: Sizer.fontsize(
+                          //               context: context, size: 20),
+                          //           letterSpacing: 2),
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: Sizer.height(context: context, size: 2),
                           ),

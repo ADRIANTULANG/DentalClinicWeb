@@ -79,6 +79,37 @@ class DashboardClientssView extends GetView<DashboardController> {
                                     Sizer.fontsize(context: context, size: 9))),
                       ),
                     ),
+                    InkWell(
+                      onTap: () async {
+                        controller.isRefreshingClients(true);
+                        await controller.getClients();
+                        controller.isRefreshingClients(false);
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 153, 211, 238),
+                        radius: Sizer.width(context: context, size: 1),
+                        child: Obx(
+                          () => controller.isRefreshingClients.value == true
+                              ? Container(
+                                  width:
+                                      Sizer.width(context: context, size: .8),
+                                  height:
+                                      Sizer.height(context: context, size: 1.8),
+                                  alignment: Alignment.center,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.refresh,
+                                  color: Colors.black,
+                                ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

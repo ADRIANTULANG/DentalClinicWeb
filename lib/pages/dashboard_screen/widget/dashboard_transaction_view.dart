@@ -76,38 +76,75 @@ class DashboardTransactionView extends GetView<DashboardController> {
               SizedBox(
                 height: Sizer.height(context: context, size: 2),
               ),
-              Container(
-                height: Sizer.height(context: context, size: 6),
-                width: Sizer.width(context: context, size: 100),
-                child: TextField(
-                  controller: controller.transactionsTextEditing,
-                  obscureText: false,
-                  onChanged: (value) {
-                    controller.searchTransactions(
-                        value: controller.transactionsTextEditing.text);
-                  },
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            controller.transactionsTextEditing.clear();
-                            FocusScope.of(context).unfocus();
-                            controller.transactions
-                                .assignAll(controller.transactions_masterListt);
-                          },
-                          icon: Icon(Icons.clear)),
-                      contentPadding: EdgeInsets.only(
-                          bottom: Sizer.height(context: context, size: 1),
-                          left: Sizer.width(context: context, size: 1)),
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9)),
-                      labelText: 'Search Name',
-                      // hintText: 'Enter Clinic Name',
-                      hintStyle: TextStyle(
-                          fontSize: Sizer.fontsize(context: context, size: 9)),
-                      labelStyle: TextStyle(
-                          fontSize: Sizer.fontsize(context: context, size: 9))),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: Sizer.height(context: context, size: 6),
+                    width: Sizer.width(context: context, size: 60),
+                    child: TextField(
+                      controller: controller.transactionsTextEditing,
+                      obscureText: false,
+                      onChanged: (value) {
+                        controller.searchTransactions(
+                            value: controller.transactionsTextEditing.text);
+                      },
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                controller.transactionsTextEditing.clear();
+                                FocusScope.of(context).unfocus();
+                                controller.transactions.assignAll(
+                                    controller.transactions_masterListt);
+                              },
+                              icon: Icon(Icons.clear)),
+                          contentPadding: EdgeInsets.only(
+                              bottom: Sizer.height(context: context, size: 1),
+                              left: Sizer.width(context: context, size: 1)),
+                          alignLabelWithHint: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(9)),
+                          labelText: 'Search Name',
+                          // hintText: 'Enter Clinic Name',
+                          hintStyle: TextStyle(
+                              fontSize:
+                                  Sizer.fontsize(context: context, size: 9)),
+                          labelStyle: TextStyle(
+                              fontSize:
+                                  Sizer.fontsize(context: context, size: 9))),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      controller.isRefreshingTransactions(true);
+                      await controller.getTransactions();
+                      controller.isRefreshingTransactions(false);
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Color.fromARGB(255, 153, 211, 238),
+                      radius: Sizer.width(context: context, size: 1),
+                      child: Obx(
+                        () => controller.isRefreshingTransactions.value == true
+                            ? Container(
+                                width: Sizer.width(context: context, size: .8),
+                                height:
+                                    Sizer.height(context: context, size: 1.8),
+                                alignment: Alignment.center,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : Icon(
+                                Icons.refresh,
+                                color: Colors.black,
+                              ),
+                      ),
+                    ),
+                  )
+                ],
               ),
               SizedBox(
                 height: Sizer.height(context: context, size: 2),
@@ -122,7 +159,7 @@ class DashboardTransactionView extends GetView<DashboardController> {
                       child: Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Client ID",
+                            "Transaction ID",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize:
@@ -158,16 +195,16 @@ class DashboardTransactionView extends GetView<DashboardController> {
                                 fontSize:
                                     Sizer.fontsize(context: context, size: 15)),
                           ))),
-                  Expanded(
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Dentist",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    Sizer.fontsize(context: context, size: 15)),
-                          ))),
+                  // Expanded(
+                  //     child: Container(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: Text(
+                  //           "Dentist",
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.bold,
+                  //               fontSize:
+                  //                   Sizer.fontsize(context: context, size: 15)),
+                  //         ))),
                   Expanded(
                       child: Container(
                           alignment: Alignment.centerLeft,
@@ -212,8 +249,7 @@ class DashboardTransactionView extends GetView<DashboardController> {
                                   child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        controller
-                                            .transactions[index].resClientId,
+                                        controller.transactions[index].resId,
                                       ))),
                               Expanded(
                                   child: Container(
@@ -238,13 +274,13 @@ class DashboardTransactionView extends GetView<DashboardController> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(controller
                                           .transactions[index].clinicName))),
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        controller.transactions[index]
-                                            .clinicDentistName,
-                                      ))),
+                              // Expanded(
+                              //     child: Container(
+                              //         alignment: Alignment.centerLeft,
+                              //         child: Text(
+                              //           controller.transactions[index]
+                              //               .clinicDentistName,
+                              //         ))),
                               Expanded(
                                   child: Container(
                                       alignment: Alignment.centerLeft,

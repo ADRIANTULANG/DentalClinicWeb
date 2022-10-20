@@ -8,6 +8,7 @@ class ClientReemarksController extends GetxController {
   RxString clientName = "".obs;
   RxList<Remarks> remarkslist = <Remarks>[].obs;
   RxList<Remarks> remarkslistMasterList = <Remarks>[].obs;
+  RxBool isRefreshingRemarks = false.obs;
   @override
   void onInit() async {
     clinicID.value = await Get.arguments['clinicID'];
