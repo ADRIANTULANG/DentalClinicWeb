@@ -222,7 +222,12 @@ class LoginScreenView extends GetView<LoginController> {
                                         color: Colors.white))
                                 : InkWell(
                                     onTap: () {
-                                      controller.login();
+                                      if (controller.loginAsAdmin.value ==
+                                          true) {
+                                        controller.login();
+                                      } else {
+                                        controller.loginClinic();
+                                      }
                                     },
                                     child: Container(
                                         height: Sizer.height(
@@ -243,8 +248,28 @@ class LoginScreenView extends GetView<LoginController> {
                           ),
                         ),
                         SizedBox(
-                          height: Sizer.height(context: context, size: 1),
+                          height: Sizer.height(context: context, size: 3),
                         ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: Sizer.width(context: context, size: 1),
+                          ),
+                          alignment: Alignment.centerLeft,
+                          width: Sizer.width(context: context, size: 100),
+                          child: Row(
+                            children: [
+                              Obx(
+                                () => Checkbox(
+                                    value: controller.loginAsAdmin.value,
+                                    activeColor: Colors.green,
+                                    onChanged: (newValue) {
+                                      controller.loginAsAdmin.value = newValue!;
+                                    }),
+                              ),
+                              Text("Login as admin")
+                            ],
+                          ),
+                        )
                         // Padding(
                         //   padding: EdgeInsets.only(
                         //       left: Sizer.width(context: context, size: 1),

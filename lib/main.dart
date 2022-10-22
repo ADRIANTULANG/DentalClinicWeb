@@ -1,3 +1,4 @@
+import 'package:dentalclinic/pages/web_clinic_home/view/web_clinic_home_view.dart';
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -16,13 +17,13 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool checkIfAlreadyLogin() {
-      if (Get.find<StorageServices>().storage.read("empId") == null) {
-        return false;
-      } else {
-        return true;
-      }
-    }
+    // bool checkIfAlreadyLogin() {
+    //   if (Get.find<StorageServices>().storage.read("empId") == null) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // }
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -30,7 +31,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: checkIfAlreadyLogin() == true ? DashBoardView() : LoginScreenView(),
+      home: Get.find<StorageServices>().storage.read("empId") != null
+          ? DashBoardView()
+          : Get.find<StorageServices>().storage.read("accountId") != null
+              ? WebClinicHomeView()
+              : LoginScreenView(),
     );
   }
 }
