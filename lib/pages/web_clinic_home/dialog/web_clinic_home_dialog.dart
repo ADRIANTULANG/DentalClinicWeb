@@ -673,7 +673,7 @@ class WebClinicHomeDialog {
     TextEditingController description = TextEditingController();
     Get.dialog(AlertDialog(
       content: Container(
-        height: Sizer.height(size: 40, context: context),
+        height: Sizer.height(size: 45, context: context),
         width: Sizer.width(size: 35, context: context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -684,7 +684,7 @@ class WebClinicHomeDialog {
             Container(
               width: Sizer.width(size: 50, context: context),
               child: Text(
-                "Dentist Registration",
+                "Services Registration",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 12, context: context),
@@ -848,7 +848,7 @@ class WebClinicHomeDialog {
 
     Get.dialog(AlertDialog(
       content: Container(
-        height: Sizer.height(size: 40, context: context),
+        height: Sizer.height(size: 45, context: context),
         width: Sizer.width(size: 35, context: context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -901,7 +901,7 @@ class WebClinicHomeDialog {
               ),
             ),
             SizedBox(
-              height: Sizer.height(size: .5, context: context),
+              height: Sizer.height(size: 1, context: context),
             ),
             InkWell(
               onTap: () {

@@ -29,41 +29,62 @@ class Home extends GetView<WebClinicController> {
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
-              Obx(
-                () => PopupMenuButton(
-                  child: Container(
-                    padding:
-                        EdgeInsets.all(Sizer.width(size: .3, context: context)),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Color.fromARGB(255, 146, 192, 230)),
-                    child: Text(
-                      controller.selectedMonth.value,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: Sizer.fontsize(size: 15, context: context),
-                          letterSpacing: 2),
+              Row(
+                children: [
+                  Obx(
+                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
+                      onTap: ()async {
+                        controller.isLoadingRefresh.value = true;
+                       await controller.onRefresh();
+                        controller.isLoadingRefresh.value = false;
+                      },
+                      child: Container(
+                          padding:
+                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color.fromARGB(255, 146, 192, 230)),
+                          child: Icon(Icons.refresh_rounded)),
+                    ) : SizedBox()
+                  ),
+                  SizedBox(width: Sizer.width(size: 1, context: context),),
+                  Obx(
+                    () => PopupMenuButton(
+                      child: Container(
+                        padding:
+                            EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromARGB(255, 146, 192, 230)),
+                        child: Text(
+                          controller.selectedMonth.value,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize: Sizer.fontsize(size: 15, context: context),
+                              letterSpacing: 2),
+                        ),
+                      ),
+                      itemBuilder: (context) => controller.months
+                          .map((element) => PopupMenuItem<String>(
+                                onTap: () {
+                                  controller.selectedMonth.value = element;
+                                  for (var i = 0;
+                                      i < controller.months.length;
+                                      i++) {
+                                    if (controller.months[i] == element) {
+                                      controller.filterMonth(month: i);
+                                    }
+                                  }
+                                },
+                                value: element,
+                                child: Text(
+                                  element,
+                                ),
+                              ))
+                          .toList(),
                     ),
                   ),
-                  itemBuilder: (context) => controller.months
-                      .map((element) => PopupMenuItem<String>(
-                            onTap: () {
-                              controller.selectedMonth.value = element;
-                              for (var i = 0;
-                                  i < controller.months.length;
-                                  i++) {
-                                if (controller.months[i] == element) {
-                                  controller.filterMonth(month: i);
-                                }
-                              }
-                            },
-                            value: element,
-                            child: Text(
-                              element,
-                            ),
-                          ))
-                      .toList(),
-                ),
+                ],
               )
             ],
           ),

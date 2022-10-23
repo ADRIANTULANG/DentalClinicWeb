@@ -30,25 +30,49 @@ class Walkin extends GetView<WebClinicController> {
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
-              InkWell(
-                onTap: () {
-                  WebClinicHomeDialog.showDialogAddWalkIn(
-                      controller: controller, context: context);
-                },
-                child: Container(
-                  padding:
-                      EdgeInsets.all(Sizer.width(size: .3, context: context)),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color.fromARGB(255, 146, 192, 230)),
-                  child: Text(
-                    "CREATE",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: Sizer.fontsize(size: 15, context: context),
-                        letterSpacing: 2),
+              Row(
+                children: [
+                  Obx(() => controller.isLoadingRefresh.value == false
+                      ? InkWell(
+                          onTap: () async {
+                            controller.isLoadingRefresh.value = true;
+                            await controller.onRefresh();
+                            controller.isLoadingRefresh.value = false;
+                          },
+                          child: Container(
+                              padding: EdgeInsets.all(
+                                  Sizer.width(size: .3, context: context)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Color.fromARGB(255, 146, 192, 230)),
+                              child: Icon(Icons.refresh_rounded)),
+                        )
+                      : SizedBox()),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
                   ),
-                ),
+                  InkWell(
+                    onTap: () {
+                      WebClinicHomeDialog.showDialogAddWalkIn(
+                          controller: controller, context: context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          Sizer.width(size: .3, context: context)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color.fromARGB(255, 146, 192, 230)),
+                      child: Text(
+                        "CREATE",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize:
+                                Sizer.fontsize(size: 15, context: context),
+                            letterSpacing: 2),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

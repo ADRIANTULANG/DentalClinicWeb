@@ -30,6 +30,23 @@ class Pending extends GetView<WebClinicController> {
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
+                 Obx(
+                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
+                      onTap: ()async {
+                        controller.isLoadingRefresh.value = true;
+                       await controller.onRefresh();
+                        controller.isLoadingRefresh.value = false;
+                      },
+                      child: Container(
+                          padding:
+                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color.fromARGB(255, 146, 192, 230)),
+                          child: Icon(Icons.refresh_rounded)),
+                    ) : SizedBox()
+                  ),
+        
             ],
           ),
           SizedBox(
@@ -68,7 +85,7 @@ class Pending extends GetView<WebClinicController> {
                 ),
               ),
               SizedBox(
-                width: Sizer.width(size: 6, context: context),
+                width: Sizer.width(size: 7, context: context),
               ),
             ],
           ),
@@ -152,13 +169,13 @@ class Pending extends GetView<WebClinicController> {
                                   color: Color.fromARGB(255, 228, 134, 128),
                                 )),
                             SizedBox(
-                              width: Sizer.width(size: .5, context: context),
+                              width: Sizer.width(size: 2, context: context),
                             ),
                             IconButton(
                                 onPressed: () {
                                   controller.updateAppointmentStatus(
                                       resID: controller
-                                          .homeApproveList[index].resId,
+                                          .pendingList[index].resId,
                                       remarks: "",
                                       status: "Approved");
                                   controller.sendNotification(

@@ -271,6 +271,9 @@ class WebApiClinicApi {
     required String status,
   }) async {
     try {
+      print(status);
+        print(remarks);
+          print(resID);
       var response = await client.post(
         Uri.parse(
             '${AppEndpoint.endPointDomain}/update-reservation-appointment.php'),
@@ -574,9 +577,10 @@ class WebApiClinicApi {
       {required String clientID}) async {
     try {
       var response = await client.post(
-        Uri.parse('${AppEndpoint.endPointDomain}/get-client-remarks.php'),
+        Uri.parse('${AppEndpoint.endPointDomain}/get-client-remarks-for-clinic.php'),
         body: {
           "clientID": clientID,
+          "clinicID": Get.find<StorageServices>().storage.read('clinicId')
         },
       );
 
@@ -675,5 +679,55 @@ class WebApiClinicApi {
         Uri.parse('${AppEndpoint.endPointDomain}/push-notification.php'),
         body: {"fcmtoken": userToken, "title": "Message", "body": "$message"});
     print("e2e notif: ${e2epushnotif.body}");
+  }
+
+    static Future updateAccount({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      var response = await client.post(
+        Uri.parse('${AppEndpoint.endPointDomain}/update-clinic-account.php'),
+        body: {
+          "clinicID": Get.find<StorageServices>().storage.read('clinicId'),
+          "password": password.toString(),
+          "username": username.toString(),
+        },
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return true;
+      } else {
+        return false;
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Create Remarks Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Create Remarks Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar(
+        "Create Remarks Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
   }
 }

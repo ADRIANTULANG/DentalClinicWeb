@@ -31,6 +31,23 @@ class Approved extends GetView<WebClinicController> {
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
+                 Obx(
+                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
+                      onTap: ()async {
+                        controller.isLoadingRefresh.value = true;
+                       await controller.onRefresh();
+                        controller.isLoadingRefresh.value = false;
+                      },
+                      child: Container(
+                          padding:
+                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color.fromARGB(255, 146, 192, 230)),
+                          child: Icon(Icons.refresh_rounded)),
+                    ) : SizedBox()
+                  ),
+    
             ],
           ),
           SizedBox(

@@ -4,7 +4,6 @@ import 'package:dentalclinic/pages/web_clinic_home/widgets/approved.dart';
 import 'package:dentalclinic/pages/web_clinic_home/widgets/denstist.dart';
 import 'package:dentalclinic/pages/web_clinic_home/widgets/home.dart';
 import 'package:dentalclinic/pages/web_clinic_home/widgets/pendings.dart';
-import 'package:dentalclinic/pages/web_clinic_home/widgets/records.dart';
 import 'package:dentalclinic/pages/web_clinic_home/widgets/services.dart';
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,7 @@
+
 import 'package:dentalclinic/pages/web_clinic_home/api/web_clinic_home_api.dart';
 import 'package:dentalclinic/services/storage_services.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -37,14 +39,42 @@ class WebClinicController extends GetxController {
   RxString selectedClient = "".obs;
   RxString selectedClientID = "".obs;
   RxString selectedFCMtoken = "".obs;
+
+  TextEditingController account_username = TextEditingController();
+  TextEditingController account_password = TextEditingController();
+
+  RxBool isLoadingRefresh = false.obs;
+
   @override
   void onInit() async {
+    account_username.text =
+        Get.find<StorageServices>().storage.read('username').toString();
+    account_password.text =
+        Get.find<StorageServices>().storage.read('password').toString();
+
     await getApproveReservations();
     await getServices();
     await getDentist();
     await getAppointments();
     await getWalkin();
     super.onInit();
+  }
+
+  onRefresh() async{
+      account_username.text =
+        Get.find<StorageServices>().storage.read('username').toString();
+    account_password.text =
+        Get.find<StorageServices>().storage.read('password').toString();
+
+    await getApproveReservations();
+    await getServices();
+    await getDentist();
+    await getAppointments();
+    await getWalkin();
+  }
+
+  onRefreshRecord()async{
+   await getClientRemarks(clientID: selectedClientID.value);
   }
 
   RxList months = [
@@ -71,8 +101,8 @@ class WebClinicController extends GetxController {
   getApproveReservations() async {
     var result = await WebApiClinicApi.approvedDetails(
         clinicID: Get.find<StorageServices>().storage.read('clinicId'));
-    homeApproveList.assignAll(result);
-    homeApproveList_masterList.assignAll(result);
+    homeApproveList.assignAll(result.reversed.toList());
+    homeApproveList_masterList.assignAll(result.reversed.toList());
     countTotal();
   }
 
@@ -104,7 +134,7 @@ class WebClinicController extends GetxController {
   getServices() async {
     var result = await WebApiClinicApi.getServices(
         clinicID: Get.find<StorageServices>().storage.read('clinicId'));
-    servicesList.assignAll(result);
+    servicesList.assignAll(result.reversed.toList());
     if (servicesList.length != 0) {
       initialValue.value = servicesList[0];
       servicesName.value = servicesList[0].servicesName.value;
@@ -129,10 +159,12 @@ class WebClinicController extends GetxController {
   getDentist() async {
     var result = await WebApiClinicApi.getDentist(
         clinicID: Get.find<StorageServices>().storage.read('clinicId'));
-    dentistList.assignAll(result);
+    dentistList.assignAll(result.reversed.toList());
   }
 
   getAppointments() async {
+    approveList.clear();
+    pendingList.clear();
     List<AppointmentList> res = await WebApiClinicApi.getAppointments();
     var result = res.reversed.toList();
     for (var i = 0; i < result.length; i++) {
@@ -151,7 +183,7 @@ class WebClinicController extends GetxController {
   }) async {
     await WebApiClinicApi.updateStatus(
         resID: resID, remarks: remarks, status: status);
-    getAppointments();
+    await getAppointments();
   }
 
   sendNotification({
@@ -181,7 +213,7 @@ class WebClinicController extends GetxController {
 
   getWalkin() async {
     var result = await WebApiClinicApi.getWalkins();
-    walkinList.assignAll(result);
+    walkinList.assignAll(result.reversed.toList());
     totalwalkinAmount.value = 0.0;
     for (var i = 0; i < walkinList.length; i++) {
       totalwalkinAmount.value =
@@ -261,5 +293,25 @@ class WebClinicController extends GetxController {
       message:
           "${Get.find<StorageServices>().storage.read('clinicName')} wants to view your past records. Please set your permissions on the records setting to visible.",
     );
+  }
+
+  updateClinicAccount() async {
+    var result = await WebApiClinicApi.updateAccount(
+        username: account_username.text, password: account_password.text);
+    if (result == true) {
+      Get.find<StorageServices>()
+          .storage
+          .write("username", account_username.text);
+      Get.find<StorageServices>()
+          .storage
+          .write("password", account_password.text);
+         Get.snackbar(
+        "Message",
+        "Account updated.",
+        colorText: Colors.white,
+        backgroundColor: Color.fromARGB(255, 139, 193, 236),
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {}
   }
 }
