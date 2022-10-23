@@ -35,7 +35,7 @@ class Services extends GetView<WebClinicController> {
                       ? InkWell(
                           onTap: () async {
                             controller.isLoadingRefresh.value = true;
-                            await controller.sendNotificationRequest();
+                            await controller.onRefresh();
                             controller.isLoadingRefresh.value = false;
                           },
                           child: Container(
