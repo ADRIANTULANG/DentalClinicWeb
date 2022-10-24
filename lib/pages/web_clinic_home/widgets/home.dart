@@ -23,7 +23,7 @@ class Home extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Home",
+                "Dashboard",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),
@@ -31,28 +31,30 @@ class Home extends GetView<WebClinicController> {
               ),
               Row(
                 children: [
-                  Obx(
-                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
-                      onTap: ()async {
-                        controller.isLoadingRefresh.value = true;
-                       await controller.onRefresh();
-                        controller.isLoadingRefresh.value = false;
-                      },
-                      child: Container(
-                          padding:
-                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color.fromARGB(255, 146, 192, 230)),
-                          child: Icon(Icons.refresh_rounded)),
-                    ) : SizedBox()
+                  Obx(() => controller.isLoadingRefresh.value == false
+                      ? InkWell(
+                          onTap: () async {
+                            controller.isLoadingRefresh.value = true;
+                            await controller.onRefresh();
+                            controller.isLoadingRefresh.value = false;
+                          },
+                          child: Container(
+                              padding: EdgeInsets.all(
+                                  Sizer.width(size: .3, context: context)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Color.fromARGB(255, 146, 192, 230)),
+                              child: Icon(Icons.refresh_rounded)),
+                        )
+                      : SizedBox()),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
                   ),
-                  SizedBox(width: Sizer.width(size: 1, context: context),),
                   Obx(
                     () => PopupMenuButton(
                       child: Container(
-                        padding:
-                            EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                        padding: EdgeInsets.all(
+                            Sizer.width(size: .3, context: context)),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Color.fromARGB(255, 146, 192, 230)),
@@ -60,7 +62,8 @@ class Home extends GetView<WebClinicController> {
                           controller.selectedMonth.value,
                           style: TextStyle(
                               fontWeight: FontWeight.w300,
-                              fontSize: Sizer.fontsize(size: 15, context: context),
+                              fontSize:
+                                  Sizer.fontsize(size: 15, context: context),
                               letterSpacing: 2),
                         ),
                       ),
@@ -83,6 +86,43 @@ class Home extends GetView<WebClinicController> {
                               ))
                           .toList(),
                     ),
+                  ),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
+                  Container(
+                      padding: EdgeInsets.all(
+                          Sizer.width(size: .3, context: context)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color.fromARGB(255, 146, 192, 230)),
+                      child: Text(
+                        "Daily",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize:
+                                Sizer.fontsize(size: 15, context: context),
+                            letterSpacing: 2),
+                      )),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
+                  Container(
+                      padding: EdgeInsets.all(
+                          Sizer.width(size: .3, context: context)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color.fromARGB(255, 146, 192, 230)),
+                      child: Text(
+                        "Weekly",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize:
+                                Sizer.fontsize(size: 15, context: context),
+                            letterSpacing: 2),
+                      )),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
                   ),
                 ],
               )

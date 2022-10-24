@@ -110,7 +110,7 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                                   ? Color.fromARGB(255, 179, 206, 228)
                                   : Colors.white),
                           child: Text(
-                            "Home",
+                            "Dashboard",
                             style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize:
