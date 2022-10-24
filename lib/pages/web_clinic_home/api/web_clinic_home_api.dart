@@ -112,6 +112,56 @@ class WebApiClinicApi {
     }
   }
 
+  static Future updateServices({
+    required String servicesID,
+    required String services_status,
+  }) async {
+    try {
+      var response = await client.post(
+        Uri.parse(
+            '${AppEndpoint.endPointDomain}/update-clinic-services-status.php'),
+        body: {
+          "services_id": servicesID.toString(),
+          "services_status": services_status.toString(),
+        },
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return true;
+      } else {
+        return false;
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Update Services Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Update Services Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar(
+        "Update Services Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+  }
+
   static Future uploadServices({
     required String servicesID,
     required String servicesName,
@@ -217,6 +267,53 @@ class WebApiClinicApi {
     }
   }
 
+  static Future removeDentist({
+    required String dentistID,
+  }) async {
+    try {
+      var response = await client.post(
+        Uri.parse('${AppEndpoint.endPointDomain}/delete-dentist.php'),
+        body: {
+          "dentistID": dentistID.toString(),
+        },
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return true;
+      } else {
+        return false;
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Delete Dentist Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Delete Dentist Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar(
+        "Delete Dentist Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+  }
+
 //
   static Future<List<AppointmentList>> getAppointments() async {
     try {
@@ -272,8 +369,8 @@ class WebApiClinicApi {
   }) async {
     try {
       print(status);
-        print(remarks);
-          print(resID);
+      print(remarks);
+      print(resID);
       var response = await client.post(
         Uri.parse(
             '${AppEndpoint.endPointDomain}/update-reservation-appointment.php'),
@@ -577,7 +674,8 @@ class WebApiClinicApi {
       {required String clientID}) async {
     try {
       var response = await client.post(
-        Uri.parse('${AppEndpoint.endPointDomain}/get-client-remarks-for-clinic.php'),
+        Uri.parse(
+            '${AppEndpoint.endPointDomain}/get-client-remarks-for-clinic.php'),
         body: {
           "clientID": clientID,
           "clinicID": Get.find<StorageServices>().storage.read('clinicId')
@@ -681,7 +779,7 @@ class WebApiClinicApi {
     print("e2e notif: ${e2epushnotif.body}");
   }
 
-    static Future updateAccount({
+  static Future updateAccount({
     required String username,
     required String password,
   }) async {
@@ -728,6 +826,53 @@ class WebApiClinicApi {
         snackPosition: SnackPosition.BOTTOM,
       );
       return false;
+    }
+  }
+
+//
+  static Future<List<AccessLogModel>> getAccesslogs() async {
+    try {
+      var response = await client.post(
+        Uri.parse('${AppEndpoint.endPointDomain}/get-clinic-access-log.php'),
+        body: {
+          "clinicID": Get.find<StorageServices>().storage.read('clinicId')
+        },
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return accessLogModelFromJson(
+            jsonEncode(jsonDecode(response.body)['data']));
+      } else {
+        return [];
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Get Services Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Get Services Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } catch (e) {
+      Get.snackbar(
+        "Get Services Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
     }
   }
 }

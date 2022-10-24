@@ -1,4 +1,3 @@
-
 import 'package:dentalclinic/pages/web_clinic_home/api/web_clinic_home_api.dart';
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,8 @@ class WebClinicController extends GetxController {
   RxList<RemarksList> remarksList = <RemarksList>[].obs;
 
   RxList<WalkinList> walkinList = <WalkinList>[].obs;
+
+  RxList<AccessLogModel> acccessLogsList = <AccessLogModel>[].obs;
   RxDouble totalAmount = 0.0.obs;
   RxDouble totalwalkinAmount = 0.0.obs;
   Rx<ServicesList> initialValue = ServicesList(
@@ -57,11 +58,12 @@ class WebClinicController extends GetxController {
     await getDentist();
     await getAppointments();
     await getWalkin();
+    await getAccesslogs();
     super.onInit();
   }
 
-  onRefresh() async{
-      account_username.text =
+  onRefresh() async {
+    account_username.text =
         Get.find<StorageServices>().storage.read('username').toString();
     account_password.text =
         Get.find<StorageServices>().storage.read('password').toString();
@@ -71,10 +73,11 @@ class WebClinicController extends GetxController {
     await getDentist();
     await getAppointments();
     await getWalkin();
+    await getAccesslogs();
   }
 
-  onRefreshRecord()async{
-   await getClientRemarks(clientID: selectedClientID.value);
+  onRefreshRecord() async {
+    await getClientRemarks(clientID: selectedClientID.value);
   }
 
   RxList months = [
@@ -142,6 +145,14 @@ class WebClinicController extends GetxController {
     }
   }
 
+  updateServices({required String servicesID}) async {
+    var result = await WebApiClinicApi.updateServices(
+        servicesID: servicesID, services_status: "Inactive");
+    if (result == true) {
+      getServices();
+    } else {}
+  }
+
   uploadServices({
     required String servicesID,
     required String servicesName,
@@ -160,6 +171,13 @@ class WebClinicController extends GetxController {
     var result = await WebApiClinicApi.getDentist(
         clinicID: Get.find<StorageServices>().storage.read('clinicId'));
     dentistList.assignAll(result.reversed.toList());
+  }
+
+  removeDentist({required String dentistID}) async {
+    var result = await WebApiClinicApi.removeDentist(dentistID: dentistID);
+    if (result == true) {
+      getDentist();
+    } else {}
   }
 
   getAppointments() async {
@@ -305,7 +323,7 @@ class WebClinicController extends GetxController {
       Get.find<StorageServices>()
           .storage
           .write("password", account_password.text);
-         Get.snackbar(
+      Get.snackbar(
         "Message",
         "Account updated.",
         colorText: Colors.white,
@@ -313,5 +331,10 @@ class WebClinicController extends GetxController {
         snackPosition: SnackPosition.TOP,
       );
     } else {}
+  }
+
+  getAccesslogs() async {
+    var result = await WebApiClinicApi.getAccesslogs();
+    acccessLogsList.assignAll(result);
   }
 }

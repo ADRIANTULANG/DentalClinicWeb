@@ -24,7 +24,7 @@ class Walkin extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Home",
+                "Walk in",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),

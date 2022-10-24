@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../configs/class_sizer.dart';
 import '../controller/web_clinic_home_controller.dart';
-import '../dialog/web_clinic_home_dialog.dart';
 
-class Services extends GetView<WebClinicController> {
-  const Services();
+class Accesslog extends GetView<WebClinicController> {
+  const Accesslog();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class Services extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Services",
+                "Logs",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),
@@ -47,30 +46,6 @@ class Services extends GetView<WebClinicController> {
                               child: Icon(Icons.refresh_rounded)),
                         )
                       : SizedBox()),
-                  SizedBox(
-                    width: Sizer.width(size: 1, context: context),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      WebClinicHomeDialog.showCreateServices(
-                          controller: controller, context: context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(
-                          Sizer.width(size: .3, context: context)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color.fromARGB(255, 146, 192, 230)),
-                      child: Text(
-                        "CREATE",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize:
-                                Sizer.fontsize(size: 15, context: context),
-                            letterSpacing: 2),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ],
@@ -85,33 +60,74 @@ class Services extends GetView<WebClinicController> {
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "ID",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              Container(
-                width: Sizer.width(size: 10, context: context),
-                child: Text(
-                  "Services",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              Container(
-                width: Sizer.width(size: 15, context: context),
-                child: Text(
-                  "Description",
+                  "Patient",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "Price",
+                  "Adress",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 5, context: context),
+                child: Text(
+                  "Email",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+              Container(
+                width: Sizer.width(size: 5, context: context),
+                child: Text(
+                  "Contact no",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+              // Container(
+              //   width: Sizer.width(size: 5, context: context),
+              //   child: Text(
+              //     "Date",
+              //     style: TextStyle(fontWeight: FontWeight.w500),
+              //   ),
+              // ),
+              // Container(
+              //   width: Sizer.width(size: 10, context: context),
+              //   child: Text(
+              //     "Service",
+              //     style: TextStyle(fontWeight: FontWeight.w500),
+              //   ),
+              // ),
+              // Container(
+              //   width: Sizer.width(size: 5, context: context),
+              //   child: Text(
+              //     "Price",
+              //     style: TextStyle(fontWeight: FontWeight.w500),
+              //   ),
+              // ),
+              // SizedBox(
+              //   child: Row(
+              //     children: [
+              //       Text(
+              //         "Total",
+              //         style: TextStyle(fontWeight: FontWeight.w500),
+              //       ),
+              //       SizedBox(
+              //         width: Sizer.width(size: .5, context: context),
+              //       ),
+              //       Obx(
+              //         () => Text(
+              //           "P ${controller.totalwalkinAmount.value}",
+              //           style: TextStyle(
+              //               fontWeight: FontWeight.w500, color: Colors.red),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // )
+              SizedBox(
+                width: Sizer.width(size: 4, context: context),
               ),
             ],
           ),
@@ -126,7 +142,7 @@ class Services extends GetView<WebClinicController> {
               child: Container(
             child: Obx(
               () => ListView.builder(
-                itemCount: controller.servicesList.length,
+                itemCount: controller.acccessLogsList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.only(
@@ -138,73 +154,33 @@ class Services extends GetView<WebClinicController> {
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.servicesList[index].servicesId,
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Container(
-                          width: Sizer.width(size: 10, context: context),
-                          child: Text(
-                            controller.servicesList[index].servicesName.value,
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Container(
-                          width: Sizer.width(size: 15, context: context),
-                          child: Text(
-                            controller.servicesList[index].servicesDescription,
+                            controller.acccessLogsList[index].clientName,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            "P " + controller.servicesList[index].servicesPrice,
+                            controller.acccessLogsList[index].clientAddress,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              width: Sizer.width(size: 2.5, context: context),
-                              child: InkWell(
-                                onTap: () {
-                                  WebClinicHomeDialog.showDialogEdit(
-                                      servicesID: controller
-                                          .servicesList[index].servicesId,
-                                      controller: controller,
-                                      servicedescription: controller
-                                          .servicesList[index]
-                                          .servicesDescription,
-                                      servicename: controller
-                                          .servicesList[index]
-                                          .servicesName
-                                          .value,
-                                      serviceprice: controller
-                                          .servicesList[index].servicesPrice,
-                                      context: context);
-                                },
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Color.fromARGB(255, 121, 184, 236),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                controller.updateServices(
-                                    servicesID: controller
-                                        .servicesList[index].servicesId);
-                              },
-                              child: Container(
-                                width: Sizer.width(size: 2.5, context: context),
-                                child: Icon(
-                                  Icons.remove_circle_rounded,
-                                  color: Color.fromARGB(255, 236, 121, 121),
-                                ),
-                              ),
-                            ),
-                          ],
+                        Container(
+                          width: Sizer.width(size: 5, context: context),
+                          child: Text(
+                            controller.acccessLogsList[index].clientEmail,
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        Container(
+                          width: Sizer.width(size: 5, context: context),
+                          child: Text(
+                            controller.acccessLogsList[index].clientContactNo,
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        SizedBox(
+                          width: Sizer.width(size: 4, context: context),
                         ),
                       ],
                     ),

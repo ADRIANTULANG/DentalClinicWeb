@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../../../configs/class_sizer.dart';
 import '../../login_screen/view/login_screen_view.dart';
+import '../widgets/accesslog.dart';
 import '../widgets/settings.dart';
 import '../widgets/walkin.dart';
 
@@ -273,33 +274,33 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                   SizedBox(
                     height: Sizer.height(size: .5, context: context),
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.only(
-                  //       left: Sizer.width(size: .3, context: context)),
-                  //   child: InkWell(
-                  //     onTap: () {
-                  //       controller.selectedIndex.value = 6;
-                  //     },
-                  //     child: Obx(
-                  //       () => Container(
-                  //         height: Sizer.height(size: 4, context: context),
-                  //         alignment: Alignment.center,
-                  //         decoration: BoxDecoration(
-                  //             color: controller.selectedIndex.value == 6
-                  //                 ? Color.fromARGB(255, 179, 206, 228)
-                  //                 : Colors.white),
-                  //         child: Text(
-                  //           "Records",
-                  //           style: TextStyle(
-                  //               fontWeight: FontWeight.w300,
-                  //               fontSize:
-                  //                   Sizer.fontsize(context: context, size: 12),
-                  //               letterSpacing: 2),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: Sizer.width(size: .3, context: context)),
+                    child: InkWell(
+                      onTap: () {
+                        controller.selectedIndex.value = 6;
+                      },
+                      child: Obx(
+                        () => Container(
+                          height: Sizer.height(size: 4, context: context),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: controller.selectedIndex.value == 6
+                                  ? Color.fromARGB(255, 179, 206, 228)
+                                  : Colors.white),
+                          child: Text(
+                            "Access logs",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize:
+                                    Sizer.fontsize(context: context, size: 12),
+                                letterSpacing: 2),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     height: Sizer.height(size: .5, context: context),
                   ),
@@ -382,7 +383,9 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                                       ? Approved()
                                       : controller.selectedIndex.value == 5
                                           ? Walkin()
-                                          : Settings()),
+                                          : controller.selectedIndex.value == 6
+                                              ? Accesslog()
+                                              : Settings()),
             )
           ],
         ),

@@ -347,3 +347,46 @@ class RemarksList {
         "clinic_contact_no": clinicContactNo,
       };
 }
+
+List<AccessLogModel> accessLogModelFromJson(String str) =>
+    List<AccessLogModel>.from(
+        json.decode(str).map((x) => AccessLogModel.fromJson(x)));
+
+String accessLogModelToJson(List<AccessLogModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class AccessLogModel {
+  AccessLogModel({
+    required this.clientId,
+    required this.clientName,
+    required this.clientAddress,
+    required this.clientEmail,
+    required this.clientContactNo,
+    required this.fcmToken,
+  });
+
+  String clientId;
+  String clientName;
+  String clientAddress;
+  String clientEmail;
+  String clientContactNo;
+  String fcmToken;
+
+  factory AccessLogModel.fromJson(Map<String, dynamic> json) => AccessLogModel(
+        clientId: json["client_id"],
+        clientName: json["client_name"],
+        clientAddress: json["client_address"],
+        clientEmail: json["client_email"],
+        clientContactNo: json["client_contact_no"],
+        fcmToken: json["fcmToken"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "client_id": clientId,
+        "client_name": clientName,
+        "client_address": clientAddress,
+        "client_email": clientEmail,
+        "client_contact_no": clientContactNo,
+        "fcmToken": fcmToken,
+      };
+}

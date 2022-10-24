@@ -113,14 +113,14 @@ class Dentist extends GetView<WebClinicController> {
               SizedBox(
                 height: Sizer.width(size: 3, context: context),
               ),
+              Container(
+                width: Sizer.width(size: 3, context: context),
+              )
             ],
-          ),
-          SizedBox(
-            height: Sizer.height(size: 1, context: context),
           ),
           Divider(),
           SizedBox(
-            height: Sizer.height(size: 1, context: context),
+            height: Sizer.height(size: .5, context: context),
           ),
           Expanded(
               child: Container(
@@ -164,8 +164,23 @@ class Dentist extends GetView<WebClinicController> {
                           ),
                         ),
                         SizedBox(
-                          height: Sizer.width(size: 3, context: context),
+                          height: Sizer.height(size: 3, context: context),
                         ),
+                        Container(
+                          width: Sizer.width(size: 3, context: context),
+                          child: InkWell(
+                            onTap: () {
+                              controller.removeDentist(
+                                dentistID:
+                                    controller.dentistList[index].dentistId,
+                              );
+                            },
+                            child: Icon(
+                              Icons.clear_rounded,
+                              color: Color.fromARGB(255, 231, 129, 121),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   );
