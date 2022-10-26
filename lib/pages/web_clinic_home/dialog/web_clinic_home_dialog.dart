@@ -1,7 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dentalclinic/pages/web_clinic_home/controller/web_clinic_home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../../configs/class_sizer.dart';
 import '../model/web_clinic_home_model.dart';
@@ -247,250 +249,455 @@ class WebClinicHomeDialog {
     TextEditingController contact = TextEditingController();
     TextEditingController email = TextEditingController();
     TextEditingController address = TextEditingController();
+    String resSchedule = "";
+
     Get.dialog(AlertDialog(
       content: Container(
-        height: Sizer.height(size: 70, context: context),
+        height: Sizer.height(size: 80, context: context),
         width: Sizer.width(size: 50, context: context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              width: Sizer.width(size: 50, context: context),
-              child: Text(
-                "Create walk in transaction",
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: Sizer.fontsize(size: 12, context: context),
-                    letterSpacing: 1),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
               ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              width: Sizer.width(size: 50, context: context),
-              child: Text(
-                "Patient name",
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 10, context: context),
-                    letterSpacing: 2),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              height: Sizer.height(size: 5, context: context),
-              width: Sizer.width(size: 50, context: context),
-              child: TextField(
-                controller: name,
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 12, context: context),
-                    letterSpacing: 2),
-                obscureText: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              width: Sizer.width(size: 50, context: context),
-              child: Text(
-                "Patient contact no",
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 10, context: context),
-                    letterSpacing: 2),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              height: Sizer.height(size: 5, context: context),
-              width: Sizer.width(size: 50, context: context),
-              child: TextField(
-                controller: contact,
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 12, context: context),
-                    letterSpacing: 2),
-                obscureText: false,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                onChanged: (value) {
-                  if (contact.text.length == 0) {
-                  } else {
-                    if (contact.text[0] != "9" || contact.text.length > 10) {
-                      contact.clear();
-                    } else {}
-                  }
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              width: Sizer.width(size: 50, context: context),
-              child: Text(
-                "Patient address",
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 10, context: context),
-                    letterSpacing: 2),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              height: Sizer.height(size: 5, context: context),
-              width: Sizer.width(size: 50, context: context),
-              child: TextField(
-                controller: address,
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 10, context: context),
-                    letterSpacing: 2),
-                obscureText: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              width: Sizer.width(size: 50, context: context),
-              child: Text(
-                "Patient email",
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 10, context: context),
-                    letterSpacing: 2),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 1, context: context),
-            ),
-            Container(
-              height: Sizer.height(size: 5, context: context),
-              width: Sizer.width(size: 50, context: context),
-              child: TextField(
-                controller: email,
-                style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: Sizer.fontsize(size: 10, context: context),
-                    letterSpacing: 2),
-                obscureText: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 2.5, context: context),
-            ),
-            Container(
-              height: Sizer.height(size: 5, context: context),
-              width: Sizer.width(size: 50, context: context),
-              padding: EdgeInsets.only(
-                  left: Sizer.width(size: 1, context: context),
-                  right: Sizer.width(size: 1, context: context)),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(6)),
-              child: Obx(
-                () => DropdownButton<ServicesList>(
-                  value: controller.initialValue.value,
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: Sizer.fontsize(size: 10, context: context),
-                  elevation: 16,
-                  isExpanded: true,
-                  style: TextStyle(
-                      letterSpacing: 1,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      fontSize: Sizer.fontsize(size: 10, context: context)),
-                  underline: SizedBox(),
-                  onChanged: (ServicesList? value) {
-                    controller.initialValue.value = value!;
-                    controller.servicesName.value = value.servicesName.value;
-                    controller.servicesprice.value = value.servicesPrice;
-                  },
-                  items: controller.servicesList.map((services) {
-                    return DropdownMenuItem(
-                      child: Obx(() => Text(services.servicesName.value)),
-                      value: services,
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 2.5, context: context),
-            ),
-            Container(
-                height: Sizer.height(size: 5, context: context),
+              Container(
                 width: Sizer.width(size: 50, context: context),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(6)),
-                alignment: Alignment.centerLeft,
-                child: Obx(() => Text("P " + controller.servicesprice.value))),
-            SizedBox(
-              height: Sizer.height(size: 4, context: context),
-            ),
-            InkWell(
-              onTap: () {
-                controller.createWalkin(
-                    patient_name: name.text,
-                    service_name: controller.servicesName.value,
-                    service_price: controller.servicesprice.value,
-                    contactno: contact.text,
-                    email: email.text,
-                    address: address.text);
-              },
-              child: Container(
-                height: Sizer.height(size: 5, context: context),
-                width: Sizer.width(size: 50, context: context),
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 130, 191, 240),
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.black54)),
-                alignment: Alignment.center,
                 child: Text(
-                  "CREATE",
+                  "Create walk in transaction",
                   style: TextStyle(
-                    letterSpacing: 4,
-                    fontSize: Sizer.fontsize(size: 12, context: context),
-                    fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w500,
+                      fontSize: Sizer.fontsize(size: 12, context: context),
+                      letterSpacing: 1),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                width: Sizer.width(size: 50, context: context),
+                child: Text(
+                  "Patient name",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 10, context: context),
+                      letterSpacing: 2),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 5, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: TextField(
+                  controller: name,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 12, context: context),
+                      letterSpacing: 2),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8)),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: Sizer.height(size: 2, context: context),
-            ),
-          ],
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                width: Sizer.width(size: 50, context: context),
+                child: Text(
+                  "Patient contact no",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 10, context: context),
+                      letterSpacing: 2),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 5, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: TextField(
+                  controller: contact,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 12, context: context),
+                      letterSpacing: 2),
+                  obscureText: false,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (value) {
+                    if (contact.text.length == 0) {
+                    } else {
+                      if (contact.text[0] != "9" || contact.text.length > 10) {
+                        contact.clear();
+                      } else {}
+                    }
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                width: Sizer.width(size: 50, context: context),
+                child: Text(
+                  "Patient address",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 10, context: context),
+                      letterSpacing: 2),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 5, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: TextField(
+                  controller: address,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 10, context: context),
+                      letterSpacing: 2),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                width: Sizer.width(size: 50, context: context),
+                child: Text(
+                  "Patient email",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 10, context: context),
+                      letterSpacing: 2),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 5, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: TextField(
+                  controller: email,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: Sizer.fontsize(size: 10, context: context),
+                      letterSpacing: 2),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 2.5, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 5, context: context),
+                width: Sizer.width(size: 50, context: context),
+                padding: EdgeInsets.only(
+                    left: Sizer.width(size: 1, context: context),
+                    right: Sizer.width(size: 1, context: context)),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(6)),
+                child: Obx(
+                  () => DropdownButton<ServicesList>(
+                    value: controller.initialValue.value,
+                    icon: Icon(Icons.arrow_drop_down),
+                    iconSize: Sizer.fontsize(size: 10, context: context),
+                    elevation: 16,
+                    isExpanded: true,
+                    style: TextStyle(
+                        letterSpacing: 1,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: Sizer.fontsize(size: 10, context: context)),
+                    underline: SizedBox(),
+                    onChanged: (ServicesList? value) {
+                      controller.initialValue.value = value!;
+                      controller.servicesName.value = value.servicesName.value;
+                      controller.servicesprice.value = value.servicesPrice;
+                    },
+                    items: controller.servicesList.map((services) {
+                      return DropdownMenuItem(
+                        child: Obx(() => Text(services.servicesName.value)),
+                        value: services,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 2.5, context: context),
+              ),
+              Container(
+                  height: Sizer.height(size: 5, context: context),
+                  width: Sizer.width(size: 50, context: context),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(6)),
+                  alignment: Alignment.centerLeft,
+                  child:
+                      Obx(() => Text("P " + controller.servicesprice.value))),
+              SizedBox(
+                height: Sizer.height(size: 2, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 40, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: SfDateRangePicker(
+                  onSelectionChanged: (args) {
+                    // print(args.value.toString());
+                    resSchedule = args.value.toString();
+                  },
+                  selectionMode: DateRangePickerSelectionMode.single,
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 2, context: context),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: Sizer.height(size: 10, context: context),
+                    width: Sizer.width(size: 11, context: context),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                          enlargeCenterPage: true,
+                          height: Sizer.height(size: 8, context: context),
+                          scrollDirection: Axis.vertical),
+                      items: controller.hourss.map((hour) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Obx(
+                              () => InkWell(
+                                onTap: () {
+                                  controller.partialselectedHour.value =
+                                      hour.toString();
+                                },
+                                child: Container(
+                                    height:
+                                        Sizer.height(size: 8, context: context),
+                                    width:
+                                        Sizer.width(size: 13, context: context),
+                                    decoration: BoxDecoration(
+                                        color: controller.partialselectedHour
+                                                    .value ==
+                                                hour
+                                            ? Colors.lightBlue
+                                            : Colors.white),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '$hour',
+                                      style: TextStyle(
+                                          fontSize: Sizer.fontsize(
+                                              size: 11, context: context),
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  Container(
+                    height: Sizer.height(size: 10, context: context),
+                    alignment: Alignment.center,
+                    child: Text(
+                      " : ",
+                      style: TextStyle(
+                          fontSize: Sizer.fontsize(size: 15, context: context),
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  Container(
+                    height: Sizer.height(size: 10, context: context),
+                    width: Sizer.width(size: 11, context: context),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                          enlargeCenterPage: true,
+                          height: Sizer.height(size: 8, context: context),
+                          scrollDirection: Axis.vertical),
+                      items: controller.minutes.map((minute) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Obx(
+                              () => InkWell(
+                                onTap: () {
+                                  controller.partialselectedMinutes.value =
+                                      minute.toString();
+                                },
+                                child: Container(
+                                    height:
+                                        Sizer.height(size: 8, context: context),
+                                    width:
+                                        Sizer.width(size: 13, context: context),
+                                    decoration: BoxDecoration(
+                                        color: controller.partialselectedMinutes
+                                                    .value ==
+                                                minute
+                                            ? Colors.lightBlue
+                                            : Colors.white),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '$minute',
+                                      style: TextStyle(
+                                          fontSize: Sizer.fontsize(
+                                              size: 13, context: context),
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    width: Sizer.width(size: .5, context: context),
+                  ),
+                  Container(
+                    height: Sizer.height(size: 5, context: context),
+                    width: Sizer.width(size: 11, context: context),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(
+                          () => InkWell(
+                            onTap: () {
+                              controller.partialselectedAmPm.value = "AM";
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              color:
+                                  controller.partialselectedAmPm.value == "AM"
+                                      ? Colors.lightBlue
+                                      : Colors.white,
+                              height: Sizer.height(size: 2, context: context),
+                              width: Sizer.width(size: 11, context: context),
+                              child: Text(
+                                "AM",
+                                style: TextStyle(
+                                    fontSize: Sizer.fontsize(
+                                        size: 11, context: context),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Obx(
+                          () => InkWell(
+                            onTap: () {
+                              controller.partialselectedAmPm.value = "PM";
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              color:
+                                  controller.partialselectedAmPm.value == "PM"
+                                      ? Colors.lightBlue
+                                      : Colors.white,
+                              height: Sizer.height(size: 2, context: context),
+                              width: Sizer.width(size: 11, context: context),
+                              child: Text(
+                                "PM",
+                                style: TextStyle(
+                                    fontSize: Sizer.fontsize(
+                                        size: 11, context: context),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  if (name.text.isEmpty ||
+                      contact.text.isEmpty ||
+                      email.text.isEmpty ||
+                      resSchedule == "" ||
+                      address.text.isEmpty) {
+                    Get.snackbar(
+                      "Message",
+                      "Oops,Missing input",
+                      colorText: Colors.white,
+                      backgroundColor: Colors.redAccent,
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  } else {
+                    controller.createWalkinPatientReservation(
+                        res_service_name: controller.servicesName.value,
+                        res_service_price: controller.servicesprice.value,
+                        res_total_amount: controller.servicesprice.value,
+                        res_schedule: resSchedule,
+                        res_schedule_time:
+                            controller.partialselectedHour.value +
+                                ":" +
+                                controller.partialselectedMinutes.value +
+                                " " +
+                                controller.partialselectedAmPm.value,
+                        res_walkin_client_name: name.text);
+                    // controller.createWalkin(
+                    //     patient_name: name.text,
+                    //     service_name: controller.servicesName.value,
+                    //     service_price: controller.servicesprice.value,
+                    //     contactno: contact.text,
+                    //     email: email.text,
+                    //     address: address.text);
+                  }
+                },
+                child: Container(
+                  height: Sizer.height(size: 5, context: context),
+                  width: Sizer.width(size: 50, context: context),
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 130, 191, 240),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: Colors.black54)),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "CREATE",
+                    style: TextStyle(
+                      letterSpacing: 4,
+                      fontSize: Sizer.fontsize(size: 12, context: context),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 2, context: context),
+              ),
+            ],
+          ),
         ),
       ),
     ));
@@ -504,7 +711,7 @@ class WebClinicHomeDialog {
     TextEditingController email = TextEditingController();
     Get.dialog(AlertDialog(
       content: Container(
-        height: Sizer.height(size: 40, context: context),
+        height: Sizer.height(size: 70, context: context),
         width: Sizer.width(size: 35, context: context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -631,12 +838,113 @@ class WebClinicHomeDialog {
             SizedBox(
               height: Sizer.height(size: 4, context: context),
             ),
+            Container(
+              height: Sizer.height(size: 5, context: context),
+              width: Sizer.width(size: 50, context: context),
+              padding: EdgeInsets.only(
+                  left: Sizer.width(size: 1, context: context),
+                  right: Sizer.width(size: 1, context: context)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(6)),
+              child: Obx(
+                () => DropdownButton<String>(
+                  value: controller.initialPosition.value,
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: Sizer.fontsize(size: 10, context: context),
+                  elevation: 16,
+                  isExpanded: true,
+                  style: TextStyle(
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontSize: Sizer.fontsize(size: 10, context: context)),
+                  underline: SizedBox(),
+                  onChanged: (String? value) {
+                    controller.initialPosition.value = value!;
+                  },
+                  items: controller.listofPositions.map((position) {
+                    return DropdownMenuItem<String>(
+                      child: Text(position),
+                      value: position!,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 2, context: context),
+            ),
+            Container(
+              width: Sizer.width(size: 50, context: context),
+              child: Text(
+                "Valid ID",
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: Sizer.fontsize(size: 10, context: context),
+                    letterSpacing: 2),
+              ),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 1, context: context),
+            ),
             InkWell(
               onTap: () {
-                controller.createDentist(
-                    dentist_name: name.text,
-                    dentist_contact: contact.text,
-                    dentist_email: email.text);
+                controller.getImage();
+              },
+              child: Obx(
+                () => controller.imagePath.value != ''
+                    ? Container(
+                        height: Sizer.height(size: 15, context: context),
+                        width: Sizer.width(size: 50, context: context),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                                image:
+                                    NetworkImage(controller.imagePath.value))),
+                      )
+                    : Container(
+                        height: Sizer.height(size: 15, context: context),
+                        width: Sizer.width(size: 50, context: context),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey)),
+                        child: Icon(Icons.add_a_photo),
+                      ),
+              ),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 4, context: context),
+            ),
+            //
+            InkWell(
+              onTap: () {
+                if (name.text.isEmpty ||
+                    contact.text.isEmpty ||
+                    email.text.isEmpty) {
+                  Get.snackbar(
+                    "Message",
+                    "Oops, Missing input",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.redAccent,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                } else if (controller.imagePath.value == '') {
+                  Get.snackbar(
+                    "Message",
+                    "Please select an image",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.redAccent,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                } else {
+                  controller.createDentist(
+                      positioned: controller.initialPosition.value,
+                      dentist_name: name.text,
+                      dentist_contact: contact.text,
+                      dentist_email: email.text);
+                }
               },
               child: Container(
                 height: Sizer.height(size: 5, context: context),
@@ -807,10 +1115,22 @@ class WebClinicHomeDialog {
             ),
             InkWell(
               onTap: () {
-                controller.createService(
-                    services_name: name.text,
-                    services_price: price.text,
-                    services_description: description.text);
+                if (name.text.isEmpty ||
+                    price.text.isEmpty ||
+                    description.text.isEmpty) {
+                  Get.snackbar(
+                    "Message",
+                    "Oops, Missing input",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.redAccent,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                } else {
+                  controller.createService(
+                      services_name: name.text,
+                      services_price: price.text,
+                      services_description: description.text);
+                }
               },
               child: Container(
                 height: Sizer.height(size: 5, context: context),
@@ -905,10 +1225,20 @@ class WebClinicHomeDialog {
             ),
             InkWell(
               onTap: () {
-                controller.createRemarks(
-                  clientID: clientID,
-                  remarks: remarks.text,
-                );
+                if (remarks.text.isEmpty) {
+                  Get.snackbar(
+                    "Message",
+                    "Oops, Please add some remarks for the client.",
+                    colorText: Colors.white,
+                    backgroundColor: Colors.redAccent,
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                } else {
+                  controller.createRemarks(
+                    clientID: clientID,
+                    remarks: remarks.text,
+                  );
+                }
               },
               child: Container(
                 height: Sizer.height(size: 5, context: context),
@@ -935,5 +1265,164 @@ class WebClinicHomeDialog {
         ),
       ),
     ));
+  }
+
+  static showCreateNotifSchedule(
+      {required BuildContext context,
+      required WebClinicController controller}) {
+    var notificationSchedule = "";
+    Get.dialog(
+      AlertDialog(
+        content: Container(
+          height: Sizer.height(size: 65, context: context),
+          width: Sizer.width(size: 80, context: context),
+          child: Column(
+            children: [
+              Text(
+                "Revisit Schedule",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: Sizer.fontsize(size: 22, context: context),
+                    letterSpacing: 1.5),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 3, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 40, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: SfDateRangePicker(
+                  onSelectionChanged: (args) {
+                    // print(args.value.toString());
+                    notificationSchedule = args.value.toString();
+                  },
+                  selectionMode: DateRangePickerSelectionMode.single,
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              Obx(
+                () => controller.isCreatingSchedule.value == false
+                    ? InkWell(
+                        onTap: () async {
+                          print(notificationSchedule);
+                          controller.isCreatingSchedule(true);
+                          await controller.createClientNotificationSchedule(
+                              client_name: controller.selectedClient.value,
+                              client_id: controller.selectedClientID.value,
+                              notif_schedule: notificationSchedule,
+                              fcmToken: controller.selectedFCMtoken.value);
+                          controller.isCreatingSchedule(false);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: Sizer.height(size: 5, context: context),
+                          width: Sizer.width(size: 50, context: context),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color.fromARGB(255, 126, 164, 230)),
+                          child: Text("CREATE"),
+                        ),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        height: Sizer.height(size: 5, context: context),
+                        width: Sizer.width(size: 50, context: context),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color.fromARGB(255, 126, 164, 230)),
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                              Sizer.width(size: .2, context: context)),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static showDatePickerRange(
+      {required BuildContext context,
+      required WebClinicController controller}) {
+    DateTime? startDate;
+    DateTime? endDate;
+    Get.dialog(
+      AlertDialog(
+        content: Container(
+          height: Sizer.height(size: 65, context: context),
+          width: Sizer.width(size: 80, context: context),
+          child: Column(
+            children: [
+              Text(
+                "Select Range",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: Sizer.fontsize(size: 22, context: context),
+                    letterSpacing: 1.5),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 3, context: context),
+              ),
+              Container(
+                height: Sizer.height(size: 40, context: context),
+                width: Sizer.width(size: 50, context: context),
+                child: SfDateRangePicker(
+                  onSelectionChanged: (args) async {
+                    print(args.value);
+                    if (args.value.startDate != null) {
+                      startDate = await args.value.startDate;
+                    }
+                    if (args.value.endDate != null) {
+                      endDate = await args.value.endDate;
+                    }
+                    print(startDate);
+                    print(endDate);
+                    // pickRange = args.value.toString();
+                  },
+                  selectionMode: DateRangePickerSelectionMode.range,
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+              InkWell(
+                onTap: () async {
+                  Get.back();
+                  if (startDate != null && endDate != null) {
+                    controller.filterRange(
+                        startDate: startDate!.subtract(Duration(days: 1)),
+                        endDate: endDate!.add(Duration(days: 1)));
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: Sizer.height(size: 5, context: context),
+                  width: Sizer.width(size: 50, context: context),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Color.fromARGB(255, 126, 164, 230)),
+                  child: Text("SELECT"),
+                ),
+              ),
+              SizedBox(
+                height: Sizer.height(size: 1, context: context),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

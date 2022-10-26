@@ -514,7 +514,7 @@ class WebApiClinicApi {
         Uri.parse(
             '${AppEndpoint.endPointDomain}/create-walkin-transaction.php'),
         body: {
-          "clinic_name": Get.find<StorageServices>().storage.read('clinicId'),
+          "clinic_name": clinic_name,
           "patient_name": patient_name.toString(),
           "service_name": service_name.toString(),
           "service_price": service_price.toString(),
@@ -563,6 +563,7 @@ class WebApiClinicApi {
   }
 
   static Future createDentist({
+    required String positioned,
     required String dentist_name,
     required String dentist_contact,
     required String dentist_email,
@@ -571,6 +572,7 @@ class WebApiClinicApi {
       var response = await client.post(
         Uri.parse('${AppEndpoint.endPointDomain}/create-clinic-dentist.php'),
         body: {
+          "dentist_position": positioned,
           "dentist_clinic_id":
               Get.find<StorageServices>().storage.read('clinicId'),
           "dentist_name": dentist_name.toString(),
@@ -782,6 +784,10 @@ class WebApiClinicApi {
   static Future updateAccount({
     required String username,
     required String password,
+    required String clinicName,
+    required String clinicEmail,
+    required String clinicAddress,
+    required String clinicContact,
   }) async {
     try {
       var response = await client.post(
@@ -790,6 +796,10 @@ class WebApiClinicApi {
           "clinicID": Get.find<StorageServices>().storage.read('clinicId'),
           "password": password.toString(),
           "username": username.toString(),
+          "clinicName": clinicName.toString(),
+          "clinicEmail": clinicEmail.toString(),
+          "clinicAddress": clinicAddress.toString(),
+          "clinicContact": clinicContact.toString(),
         },
       );
 
@@ -847,7 +857,7 @@ class WebApiClinicApi {
       }
     } on TimeoutException catch (_) {
       Get.snackbar(
-        "Get Services Error: Timeout",
+        "Get Access Log Error: Timeout",
         "Oops, something went wrong. Please try again later.",
         colorText: Colors.white,
         backgroundColor: Colors.lightGreen,
@@ -857,7 +867,7 @@ class WebApiClinicApi {
     } on SocketException catch (_) {
       print(_);
       Get.snackbar(
-        "Get Services Error: Socket",
+        "Get Access Log Error: Socket",
         "Oops, something went wrong. Please try again later.",
         colorText: Colors.white,
         backgroundColor: Colors.lightGreen,
@@ -866,7 +876,7 @@ class WebApiClinicApi {
       return [];
     } catch (e) {
       Get.snackbar(
-        "Get Services Error",
+        "Get Access Log Error",
         "Oops, something went wrong. Please try again later.",
         colorText: Colors.white,
         backgroundColor: Colors.lightGreen,
@@ -874,5 +884,281 @@ class WebApiClinicApi {
       );
       return [];
     }
+  }
+
+  static Future createReservationWalkinPatient({
+    required String res_service_name,
+    required String res_service_price,
+    required String res_total_amount,
+    required String res_schedule,
+    required String res_schedule_time,
+    required String res_walkin_client_name,
+  }) async {
+    try {
+      var response = await client.post(
+        Uri.parse('${AppEndpoint.endPointDomain}/create-reservation.php'),
+        body: {
+          "res_service_name": res_service_name,
+          "res_clinic_id": Get.find<StorageServices>().storage.read('clinicId'),
+          "res_service_price": res_service_price.toString(),
+          "res_total_amount": res_service_price.toString(),
+          "res_schedule": res_schedule.toString(),
+          "res_schedule_time": res_schedule_time.toString(),
+          "res_walkin_client_name": res_walkin_client_name.toString(),
+        },
+      );
+      print(response.body);
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return true;
+      } else {
+        return false;
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Create Dentist Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Create Dentist Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar(
+        "Create Dentist Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+  }
+
+//
+  static Future<List<NotificationSchedule>> getClientNotificationSchedule(
+      {required String clientID}) async {
+    try {
+      var response = await client.post(
+        Uri.parse(
+            '${AppEndpoint.endPointDomain}/get-client-notification-schedule.php'),
+        body: {
+          "clinic_id": Get.find<StorageServices>().storage.read('clinicId'),
+          "client_id": clientID
+        },
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return notificationScheduleFromJson(
+            jsonEncode(jsonDecode(response.body)['data']));
+      } else {
+        return [];
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Get Client Notification Schedule Log Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Get Client Notification Schedule Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } catch (e) {
+      Get.snackbar(
+        "Get Client Notification Schedule Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    }
+  }
+
+  static Future createClientNotificationSchedule({
+    required String client_name,
+    required String client_id,
+    required String notif_schedule,
+    required String fcmToken,
+  }) async {
+    try {
+      var response = await client.post(
+        Uri.parse(
+            '${AppEndpoint.endPointDomain}/create-notification-schedule.php'),
+        body: {
+          "client_name": client_name,
+          "client_id": client_id,
+          "clinic_id": Get.find<StorageServices>().storage.read('clinicId'),
+          "clinic_name": Get.find<StorageServices>().storage.read('clinicName'),
+          "notif_schedule": notif_schedule.toString(),
+          "fcmToken": fcmToken.toString(),
+        },
+      );
+      print(response.body);
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return true;
+      } else {
+        return false;
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Create Client Notif Schedule Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Create Client Notif Schedule  Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar(
+        "Create Client Notif Schedule  Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+  }
+
+  static Future<List<NotificationSchedule>>
+      getClinicNotificationSchedule() async {
+    try {
+      var response = await client.post(
+        Uri.parse(
+            '${AppEndpoint.endPointDomain}/get-clinic-notification-schedule.php'),
+        body: {
+          "clinic_id": Get.find<StorageServices>().storage.read('clinicId'),
+        },
+      );
+
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return notificationScheduleFromJson(
+            jsonEncode(jsonDecode(response.body)['data']));
+      } else {
+        return [];
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Get Clinic Notification Schedule Log Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Get Clinic Notification Schedule Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    } catch (e) {
+      Get.snackbar(
+        "Get Clinic Notification Schedule Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return [];
+    }
+  }
+
+  static Future updateNotificationStatus({
+    required String notif_id,
+  }) async {
+    try {
+      var response = await client.post(
+        Uri.parse(
+            '${AppEndpoint.endPointDomain}/update-notification-schedule.php'),
+        body: {
+          "notif_id": notif_id,
+        },
+      );
+      print(response.body);
+      if (jsonDecode(response.body)['message'] == "Success") {
+        return true;
+      } else {
+        return false;
+      }
+    } on TimeoutException catch (_) {
+      Get.snackbar(
+        "Update Notif Status Error: Timeout",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } on SocketException catch (_) {
+      print(_);
+      Get.snackbar(
+        "Update Notif Status Error: Socket",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar(
+        "Update Notif Status  Error",
+        "Oops, something went wrong. Please try again later.",
+        colorText: Colors.white,
+        backgroundColor: Colors.lightGreen,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+  }
+
+  static Future sendNotificationAutomatic({
+    required String userToken,
+    required String date,
+    required String clinic,
+  }) async {
+    var e2epushnotif = await http.post(
+        Uri.parse('${AppEndpoint.endPointDomain}/push-notification.php'),
+        body: {
+          "fcmtoken": userToken,
+          "title": "Message",
+          "body":
+              "Please be reminded, you will be revisiting $clinic on - $date"
+        });
+    print("e2e notif: ${e2epushnotif.body}");
   }
 }

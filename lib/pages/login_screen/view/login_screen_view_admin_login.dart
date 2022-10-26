@@ -4,12 +4,11 @@ import 'package:get/get.dart';
 
 import '../controller/login_screen_controller.dart';
 
-class LoginScreenView extends GetView<LoginController> {
-  const LoginScreenView({Key? key}) : super(key: key);
+class LoginScreenViewAdmin extends GetView<LoginController> {
+  const LoginScreenViewAdmin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Get.put(LoginController());
     return Scaffold(
       body: Container(
         color: Colors.white10,
@@ -40,8 +39,31 @@ class LoginScreenView extends GetView<LoginController> {
                       left: Sizer.width(context: context, size: 0.5),
                       bottom: Sizer.height(context: context, size: 9)),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: Sizer.height(context: context, size: 2),
+                      ),
+                      // Container(
+                      //   alignment: Alignment.centerLeft,
+                      //   width: Sizer.width(context: context, size: 100),
+                      //   child: Row(
+                      //     children: [
+                      //       InkWell(
+                      //           onTap: () {
+                      //             if (controller.loginAsAdmin.value == true) {
+                      //               controller.loginAsAdmin.value = false;
+                      //             } else {
+                      //               controller.loginAsAdmin.value = true;
+                      //             }
+                      //           },
+                      //           child: Icon(Icons.store)),
+                      //     ],
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: Sizer.height(context: context, size: 20),
+                      ),
                       Container(
                         width: Sizer.width(context: context, size: 100),
                         child: Text(
@@ -222,12 +244,12 @@ class LoginScreenView extends GetView<LoginController> {
                                         color: Colors.white))
                                 : InkWell(
                                     onTap: () {
-                                      if (controller.loginAsAdmin.value ==
-                                          true) {
-                                        controller.login();
-                                      } else {
-                                        controller.loginClinic();
-                                      }
+                                      // if (controller.loginAsAdmin.value ==
+                                      //     true) {
+                                      controller.login();
+                                      // } else {
+                                      //   controller.loginClinic();
+                                      // }
                                     },
                                     child: Container(
                                         height: Sizer.height(
@@ -250,45 +272,6 @@ class LoginScreenView extends GetView<LoginController> {
                         SizedBox(
                           height: Sizer.height(context: context, size: 3),
                         ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: Sizer.width(context: context, size: 1),
-                          ),
-                          alignment: Alignment.centerLeft,
-                          width: Sizer.width(context: context, size: 100),
-                          child: Row(
-                            children: [
-                              Obx(
-                                () => Checkbox(
-                                    value: controller.loginAsAdmin.value,
-                                    activeColor: Colors.green,
-                                    onChanged: (newValue) {
-                                      controller.loginAsAdmin.value = newValue!;
-                                    }),
-                              ),
-                              Text("Login as admin")
-                            ],
-                          ),
-                        )
-                        // Padding(
-                        //   padding: EdgeInsets.only(
-                        //       left: Sizer.width(context: context, size: 1),
-                        //       right: Sizer.width(context: context, size: 1)),
-                        //   child: InkWell(
-                        //     onTap: () {},
-                        //     child: Container(
-                        //         height: Sizer.height(context: context, size: 7),
-                        //         width: Sizer.width(context: context, size: 100),
-                        //         alignment: Alignment.center,
-                        //         decoration: BoxDecoration(
-                        //             color: Colors.green[700],
-                        //             borderRadius: BorderRadius.circular(10)),
-                        //         child: Text(
-                        //           "Register",
-                        //           style: TextStyle(fontWeight: FontWeight.w500),
-                        //         )),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

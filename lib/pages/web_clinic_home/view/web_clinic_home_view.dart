@@ -1,16 +1,15 @@
 import 'package:dentalclinic/constant/endPoints.dart';
+import 'package:dentalclinic/pages/login_screen/view/login_main.dart';
 import 'package:dentalclinic/pages/web_clinic_home/controller/web_clinic_home_controller.dart';
-import 'package:dentalclinic/pages/web_clinic_home/widgets/approved.dart';
-import 'package:dentalclinic/pages/web_clinic_home/widgets/denstist.dart';
-import 'package:dentalclinic/pages/web_clinic_home/widgets/home.dart';
+import 'package:dentalclinic/pages/web_clinic_home/widgets/patient.dart';
+import 'package:dentalclinic/pages/web_clinic_home/widgets/users.dart';
+import 'package:dentalclinic/pages/web_clinic_home/widgets/dashboard.dart';
 import 'package:dentalclinic/pages/web_clinic_home/widgets/pendings.dart';
 import 'package:dentalclinic/pages/web_clinic_home/widgets/services.dart';
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../configs/class_sizer.dart';
-import '../../login_screen/view/login_screen_view.dart';
 import '../widgets/accesslog.dart';
 import '../widgets/settings.dart';
 import '../widgets/walkin.dart';
@@ -170,7 +169,7 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                                   ? Color.fromARGB(255, 179, 206, 228)
                                   : Colors.white),
                           child: Text(
-                            "Dentist",
+                            "Users",
                             style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize:
@@ -230,7 +229,7 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                                   ? Color.fromARGB(255, 179, 206, 228)
                                   : Colors.white),
                           child: Text(
-                            "Approve",
+                            "Patients",
                             style: TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize:
@@ -241,36 +240,36 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: Sizer.height(size: .5, context: context),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: Sizer.width(size: .3, context: context)),
-                    child: InkWell(
-                      onTap: () {
-                        controller.selectedIndex.value = 5;
-                      },
-                      child: Obx(
-                        () => Container(
-                          height: Sizer.height(size: 4, context: context),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: controller.selectedIndex.value == 5
-                                  ? Color.fromARGB(255, 179, 206, 228)
-                                  : Colors.white),
-                          child: Text(
-                            "Walk in",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize:
-                                    Sizer.fontsize(context: context, size: 12),
-                                letterSpacing: 2),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: Sizer.height(size: .5, context: context),
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //       left: Sizer.width(size: .3, context: context)),
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       controller.selectedIndex.value = 5;
+                  //     },
+                  //     child: Obx(
+                  //       () => Container(
+                  //         height: Sizer.height(size: 4, context: context),
+                  //         alignment: Alignment.center,
+                  //         decoration: BoxDecoration(
+                  //             color: controller.selectedIndex.value == 5
+                  //                 ? Color.fromARGB(255, 179, 206, 228)
+                  //                 : Colors.white),
+                  //         child: Text(
+                  //           "Walk in",
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.w300,
+                  //               fontSize:
+                  //                   Sizer.fontsize(context: context, size: 12),
+                  //               letterSpacing: 2),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: Sizer.height(size: .5, context: context),
                   ),
@@ -340,7 +339,7 @@ class WebClinicHomeView extends GetView<WebClinicController> {
                     child: InkWell(
                       onTap: () async {
                         await Get.find<StorageServices>().removeCredentials();
-                        Get.offAll(() => LoginScreenView());
+                        Get.offAll(() => LoginMain());
                       },
                       child: Container(
                         height: Sizer.height(size: 4, context: context),
@@ -372,15 +371,15 @@ class WebClinicHomeView extends GetView<WebClinicController> {
             Obx(
               () => Expanded(
                   child: controller.selectedIndex.value == 0
-                      ? Home()
+                      ? Dashboard()
                       : controller.selectedIndex.value == 1
                           ? Services()
                           : controller.selectedIndex.value == 2
-                              ? Dentist()
+                              ? Users()
                               : controller.selectedIndex.value == 3
                                   ? Pending()
                                   : controller.selectedIndex.value == 4
-                                      ? Approved()
+                                      ? Patient()
                                       : controller.selectedIndex.value == 5
                                           ? Walkin()
                                           : controller.selectedIndex.value == 6

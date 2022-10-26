@@ -10,10 +10,12 @@ class LoginController extends GetxController {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   RxList<LoginModel> adminDetails = <LoginModel>[].obs;
-
-  RxBool loginAsAdmin = false.obs;
-
+  //clinic
+  // RxBool loginAsAdmin = false.obs;
+  //admin
+  RxBool loginAsAdmin = true.obs;
   RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();

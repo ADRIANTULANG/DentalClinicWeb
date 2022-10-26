@@ -30,23 +30,22 @@ class Pending extends GetView<WebClinicController> {
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
-                 Obx(
-                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
-                      onTap: ()async {
+              Obx(() => controller.isLoadingRefresh.value == false
+                  ? InkWell(
+                      onTap: () async {
                         controller.isLoadingRefresh.value = true;
-                       await controller.onRefresh();
+                        await controller.onRefresh();
                         controller.isLoadingRefresh.value = false;
                       },
                       child: Container(
-                          padding:
-                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                          padding: EdgeInsets.all(
+                              Sizer.width(size: .3, context: context)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Color.fromARGB(255, 146, 192, 230)),
                           child: Icon(Icons.refresh_rounded)),
-                    ) : SizedBox()
-                  ),
-        
+                    )
+                  : SizedBox()),
             ],
           ),
           SizedBox(
@@ -112,14 +111,14 @@ class Pending extends GetView<WebClinicController> {
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.pendingList[index].resServiceName,
+                            controller.pendingList[index].resServiceName!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 10, context: context),
                           child: Text(
-                            controller.pendingList[index].clientName,
+                            controller.pendingList[index].clientName!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
@@ -129,14 +128,15 @@ class Pending extends GetView<WebClinicController> {
                             DateFormat.yMMMEd().format(
                                     controller.pendingList[index].resSchedule) +
                                 " " +
-                                controller.pendingList[index].resScheduleTime,
+                                controller.pendingList[index].resScheduleTime!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            "P " + controller.pendingList[index].resTotalAmount,
+                            "P " +
+                                controller.pendingList[index].resTotalAmount!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
@@ -146,19 +146,19 @@ class Pending extends GetView<WebClinicController> {
                                 onPressed: () {
                                   controller.updateAppointmentStatus(
                                       resID:
-                                          controller.pendingList[index].resId,
+                                          controller.pendingList[index].resId!,
                                       remarks: "Conflict",
                                       status: "Rejected");
                                   controller.sendNotification(
                                       userToken: controller
-                                          .pendingList[index].fcmToken,
+                                          .pendingList[index].fcmToken!,
                                       service: controller
-                                          .pendingList[index].resServiceName,
+                                          .pendingList[index].resServiceName!,
                                       date: DateFormat.yMMMEd().format(
                                           controller
                                               .pendingList[index].resSchedule),
                                       time: controller
-                                          .pendingList[index].resScheduleTime,
+                                          .pendingList[index].resScheduleTime!,
                                       clinic: Get.find<StorageServices>()
                                           .storage
                                           .read('clinicName'),
@@ -174,20 +174,20 @@ class Pending extends GetView<WebClinicController> {
                             IconButton(
                                 onPressed: () {
                                   controller.updateAppointmentStatus(
-                                      resID: controller
-                                          .pendingList[index].resId,
+                                      resID:
+                                          controller.pendingList[index].resId!,
                                       remarks: "",
                                       status: "Approved");
                                   controller.sendNotification(
                                       userToken: controller
-                                          .pendingList[index].fcmToken,
+                                          .pendingList[index].fcmToken!,
                                       service: controller
-                                          .pendingList[index].resServiceName,
+                                          .pendingList[index].resServiceName!,
                                       date: DateFormat.yMMMEd().format(
                                           controller
                                               .pendingList[index].resSchedule),
                                       time: controller
-                                          .pendingList[index].resScheduleTime,
+                                          .pendingList[index].resScheduleTime!,
                                       clinic: Get.find<StorageServices>()
                                           .storage
                                           .read('clinicName'),

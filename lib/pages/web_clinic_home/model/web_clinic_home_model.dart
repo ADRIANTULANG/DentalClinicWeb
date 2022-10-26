@@ -10,46 +10,46 @@ String approvedListToJson(List<ApprovedList> data) =>
 
 class ApprovedList {
   ApprovedList({
-    required this.resId,
-    required this.resServiceName,
-    required this.resClinicId,
-    required this.resServicePrice,
-    required this.resFee,
-    required this.resTotalAmount,
+    this.resId,
+    this.resServiceName,
+    this.resClinicId,
+    this.resServicePrice,
+    this.resFee,
+    this.resTotalAmount,
     required this.resSchedule,
-    required this.resScheduleTime,
-    required this.resPaymentGateway,
-    required this.resClientId,
-    required this.resStatus,
-    required this.resRemarks,
+    this.resScheduleTime,
+    this.resPaymentGateway,
+    this.resClientId,
+    this.resStatus,
+    this.resRemarks,
   });
 
-  String resId;
-  String resServiceName;
-  String resClinicId;
-  String resServicePrice;
-  String resFee;
-  String resTotalAmount;
+  String? resId;
+  String? resServiceName;
+  String? resClinicId;
+  String? resServicePrice;
+  String? resFee;
+  String? resTotalAmount;
   DateTime resSchedule;
-  String resScheduleTime;
-  String resPaymentGateway;
-  String resClientId;
-  String resStatus;
-  String resRemarks;
+  String? resScheduleTime;
+  String? resPaymentGateway;
+  String? resClientId;
+  String? resStatus;
+  String? resRemarks;
 
   factory ApprovedList.fromJson(Map<String, dynamic> json) => ApprovedList(
-        resId: json["res_id"],
-        resServiceName: json["res_service_name"],
-        resClinicId: json["res_clinic_id"],
-        resServicePrice: json["res_service_price"],
-        resFee: json["res_fee"],
-        resTotalAmount: json["res_total_amount"],
+        resId: json["res_id"] ?? "",
+        resServiceName: json["res_service_name"] ?? "",
+        resClinicId: json["res_clinic_id"] ?? "",
+        resServicePrice: json["res_service_price"] ?? "",
+        resFee: json["res_fee"] ?? "",
+        resTotalAmount: json["res_total_amount"] ?? "",
         resSchedule: DateTime.parse(json["res_schedule"]),
-        resScheduleTime: json["res_schedule_time"],
-        resPaymentGateway: json["res_payment_gateway"],
-        resClientId: json["res_client_id"],
-        resStatus: json["res_status"],
-        resRemarks: json["res_remarks"],
+        resScheduleTime: json["res_schedule_time"] ?? "",
+        resPaymentGateway: json["res_payment_gateway"] ?? "",
+        resClientId: json["res_client_id"] ?? "",
+        resStatus: json["res_status"] ?? "",
+        resRemarks: json["res_remarks"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -118,6 +118,7 @@ String dentistListToJson(List<DentistList> data) =>
 
 class DentistList {
   DentistList({
+    required this.dentistPosition,
     required this.dentistId,
     required this.dentistClinicId,
     required this.dentistName,
@@ -125,7 +126,7 @@ class DentistList {
     required this.dentistEmail,
     required this.status,
   });
-
+  String dentistPosition;
   String dentistId;
   String dentistClinicId;
   String dentistName;
@@ -134,6 +135,7 @@ class DentistList {
   String status;
 
   factory DentistList.fromJson(Map<String, dynamic> json) => DentistList(
+        dentistPosition: json["dentist_position"],
         dentistId: json["dentist_id"],
         dentistClinicId: json["dentist_clinic_id"],
         dentistName: json["dentist_name"],
@@ -143,6 +145,7 @@ class DentistList {
       );
 
   Map<String, dynamic> toJson() => {
+        "dentist_position": dentistPosition,
         "dentist_id": dentistId,
         "dentist_clinic_id": dentistClinicId,
         "dentist_name": dentistName,
@@ -161,56 +164,64 @@ String appointmentListToJson(List<AppointmentList> data) =>
 
 class AppointmentList {
   AppointmentList({
-    required this.resId,
-    required this.resServiceName,
-    required this.resClinicId,
-    required this.resServicePrice,
-    required this.resFee,
-    required this.resTotalAmount,
+    this.resId,
+    this.resServiceName,
+    this.resClinicId,
+    this.resServicePrice,
+    this.resFee,
+    this.resTotalAmount,
     required this.resSchedule,
-    required this.resScheduleTime,
-    required this.resPaymentGateway,
-    required this.resClientId,
-    required this.resStatus,
-    required this.resRemarks,
-    required this.clientName,
-    required this.fcmToken,
+    this.resScheduleTime,
+    this.resPaymentGateway,
+    this.resClientId,
+    this.resStatus,
+    this.resRemarks,
+    this.clientName,
+    this.fcmToken,
+    this.resWalkinName,
+    this.resType,
   });
 
-  String resId;
-  String resServiceName;
-  String resClinicId;
-  String resServicePrice;
-  String resFee;
-  String resTotalAmount;
+  String? resWalkinName;
+  String? resType;
+  String? resId;
+  String? resServiceName;
+  String? resClinicId;
+  String? resServicePrice;
+  String? resFee;
+  String? resTotalAmount;
   DateTime resSchedule;
-  String resScheduleTime;
-  String resPaymentGateway;
-  String resClientId;
-  String resStatus;
-  String resRemarks;
-  String clientName;
-  String fcmToken;
+  String? resScheduleTime;
+  String? resPaymentGateway;
+  String? resClientId;
+  String? resStatus;
+  String? resRemarks;
+  String? clientName;
+  String? fcmToken;
 
   factory AppointmentList.fromJson(Map<String, dynamic> json) =>
       AppointmentList(
-        resId: json["res_id"],
-        resServiceName: json["res_service_name"],
-        resClinicId: json["res_clinic_id"],
-        resServicePrice: json["res_service_price"],
-        resFee: json["res_fee"],
-        resTotalAmount: json["res_total_amount"],
+        resId: json["res_id"] ?? "",
+        resServiceName: json["res_service_name"] ?? "",
+        resClinicId: json["res_clinic_id"] ?? "",
+        resServicePrice: json["res_service_price"] ?? "",
+        resFee: json["res_fee"] ?? "",
+        resTotalAmount: json["res_total_amount"] ?? "",
         resSchedule: DateTime.parse(json["res_schedule"]),
-        resScheduleTime: json["res_schedule_time"],
-        resPaymentGateway: json["res_payment_gateway"],
-        resClientId: json["res_client_id"],
-        resStatus: json["res_status"],
-        resRemarks: json["res_remarks"],
-        clientName: json["client_name"],
-        fcmToken: json["fcmToken"],
+        resScheduleTime: json["res_schedule_time"] ?? "",
+        resPaymentGateway: json["res_payment_gateway"] ?? "",
+        resClientId: json["res_client_id"] ?? "",
+        resStatus: json["res_status"] ?? "",
+        resRemarks: json["res_remarks"] ?? "",
+        clientName: json["client_name"] ?? "",
+        fcmToken: json["fcmToken"] ?? "",
+        resWalkinName: json["res_walkin_client_name"] ?? "",
+        resType: json["res_type"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
+        "res_walkin_client_name": resWalkinName,
+        "resType": resType,
         "res_id": resId,
         "res_service_name": resServiceName,
         "res_clinic_id": resClinicId,
@@ -357,28 +368,28 @@ String accessLogModelToJson(List<AccessLogModel> data) =>
 
 class AccessLogModel {
   AccessLogModel({
-    required this.clientId,
-    required this.clientName,
-    required this.clientAddress,
-    required this.clientEmail,
-    required this.clientContactNo,
-    required this.fcmToken,
+    this.clientId,
+    this.clientName,
+    this.clientAddress,
+    this.clientEmail,
+    this.clientContactNo,
+    this.fcmToken,
   });
 
-  String clientId;
-  String clientName;
-  String clientAddress;
-  String clientEmail;
-  String clientContactNo;
-  String fcmToken;
+  String? clientId;
+  String? clientName;
+  String? clientAddress;
+  String? clientEmail;
+  String? clientContactNo;
+  String? fcmToken;
 
   factory AccessLogModel.fromJson(Map<String, dynamic> json) => AccessLogModel(
-        clientId: json["client_id"],
-        clientName: json["client_name"],
-        clientAddress: json["client_address"],
-        clientEmail: json["client_email"],
-        clientContactNo: json["client_contact_no"],
-        fcmToken: json["fcmToken"],
+        clientId: json["client_id"] ?? "",
+        clientName: json["client_name"] ?? "",
+        clientAddress: json["client_address"] ?? "",
+        clientEmail: json["client_email"] ?? "",
+        clientContactNo: json["client_contact_no"] ?? "",
+        fcmToken: json["fcmToken"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -387,6 +398,58 @@ class AccessLogModel {
         "client_address": clientAddress,
         "client_email": clientEmail,
         "client_contact_no": clientContactNo,
+        "fcmToken": fcmToken,
+      };
+}
+
+List<NotificationSchedule> notificationScheduleFromJson(String str) =>
+    List<NotificationSchedule>.from(
+        json.decode(str).map((x) => NotificationSchedule.fromJson(x)));
+
+String notificationScheduleToJson(List<NotificationSchedule> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class NotificationSchedule {
+  NotificationSchedule({
+    required this.notifId,
+    required this.clientName,
+    required this.clientId,
+    required this.clinicId,
+    required this.clinicName,
+    required this.notifSchedule,
+    required this.isNotified,
+    required this.fcmToken,
+  });
+
+  String notifId;
+  String clientName;
+  String clientId;
+  String clinicId;
+  String clinicName;
+  DateTime notifSchedule;
+  String isNotified;
+  String fcmToken;
+
+  factory NotificationSchedule.fromJson(Map<String, dynamic> json) =>
+      NotificationSchedule(
+        notifId: json["notif_id"],
+        clientName: json["client_name"],
+        clientId: json["client_id"],
+        clinicId: json["clinic_id"],
+        clinicName: json["clinic_name"],
+        notifSchedule: DateTime.parse(json["notif_schedule"]),
+        isNotified: json["isNotified"],
+        fcmToken: json["fcmToken"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "notif_id": notifId,
+        "client_name": clientName,
+        "client_id": clientId,
+        "clinic_id": clinicId,
+        "clinic_name": clinicName,
+        "notif_schedule": notifSchedule.toIso8601String(),
+        "isNotified": isNotified,
         "fcmToken": fcmToken,
       };
 }

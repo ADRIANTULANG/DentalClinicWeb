@@ -79,7 +79,7 @@ class DashboardController extends GetxController {
     totaltransactionBalance.value = 0.0;
     for (var i = 0; i < transactions_masterListt.length; i++) {
       totaltransactionBalance.value = totaltransactionBalance.value +
-          double.parse(transactions_masterListt[i].resFee);
+          double.parse(transactions_masterListt[i].resFee!);
     }
   }
 

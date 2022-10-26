@@ -1,12 +1,12 @@
+import 'package:dentalclinic/pages/web_clinic_home/dialog/web_clinic_home_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../configs/class_sizer.dart';
 import '../controller/web_clinic_home_controller.dart';
 
-class Home extends GetView<WebClinicController> {
-  const Home();
+class Users extends GetView<WebClinicController> {
+  const Users();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class Home extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Dashboard",
+                "Users",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),
@@ -50,82 +50,29 @@ class Home extends GetView<WebClinicController> {
                   SizedBox(
                     width: Sizer.width(size: 1, context: context),
                   ),
-                  Obx(
-                    () => PopupMenuButton(
-                      child: Container(
-                        padding: EdgeInsets.all(
-                            Sizer.width(size: .3, context: context)),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color.fromARGB(255, 146, 192, 230)),
-                        child: Text(
-                          controller.selectedMonth.value,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize:
-                                  Sizer.fontsize(size: 15, context: context),
-                              letterSpacing: 2),
-                        ),
+                  InkWell(
+                    onTap: () {
+                      WebClinicHomeDialog.showCreateDentist(
+                          controller: controller, context: context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          Sizer.width(size: .3, context: context)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color.fromARGB(255, 146, 192, 230)),
+                      child: Text(
+                        "CREATE",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize:
+                                Sizer.fontsize(size: 15, context: context),
+                            letterSpacing: 2),
                       ),
-                      itemBuilder: (context) => controller.months
-                          .map((element) => PopupMenuItem<String>(
-                                onTap: () {
-                                  controller.selectedMonth.value = element;
-                                  for (var i = 0;
-                                      i < controller.months.length;
-                                      i++) {
-                                    if (controller.months[i] == element) {
-                                      controller.filterMonth(month: i);
-                                    }
-                                  }
-                                },
-                                value: element,
-                                child: Text(
-                                  element,
-                                ),
-                              ))
-                          .toList(),
                     ),
                   ),
-                  SizedBox(
-                    width: Sizer.width(size: 1, context: context),
-                  ),
-                  Container(
-                      padding: EdgeInsets.all(
-                          Sizer.width(size: .3, context: context)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color.fromARGB(255, 146, 192, 230)),
-                      child: Text(
-                        "Daily",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize:
-                                Sizer.fontsize(size: 15, context: context),
-                            letterSpacing: 2),
-                      )),
-                  SizedBox(
-                    width: Sizer.width(size: 1, context: context),
-                  ),
-                  Container(
-                      padding: EdgeInsets.all(
-                          Sizer.width(size: .3, context: context)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color.fromARGB(255, 146, 192, 230)),
-                      child: Text(
-                        "Weekly",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize:
-                                Sizer.fontsize(size: 15, context: context),
-                            letterSpacing: 2),
-                      )),
-                  SizedBox(
-                    width: Sizer.width(size: 1, context: context),
-                  ),
                 ],
-              )
+              ),
             ],
           ),
           SizedBox(
@@ -145,58 +92,48 @@ class Home extends GetView<WebClinicController> {
               Container(
                 width: Sizer.width(size: 10, context: context),
                 child: Text(
-                  "Services",
+                  "Name",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "Date",
+                  "Contact no.",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "Price",
+                  "Email",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+              Container(
+                width: Sizer.width(size: 5, context: context),
+                child: Text(
+                  "Position",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               SizedBox(
-                child: Row(
-                  children: [
-                    Text(
-                      "Total",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      width: Sizer.width(size: .5, context: context),
-                    ),
-                    Obx(
-                      () => Text(
-                        "P ${controller.totalAmount.value}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
+                height: Sizer.width(size: 3, context: context),
+              ),
+              Container(
+                width: Sizer.width(size: 3, context: context),
               )
             ],
           ),
-          SizedBox(
-            height: Sizer.height(size: 1, context: context),
-          ),
           Divider(),
           SizedBox(
-            height: Sizer.height(size: 1, context: context),
+            height: Sizer.height(size: .5, context: context),
           ),
           Expanded(
               child: Container(
             child: Obx(
               () => ListView.builder(
-                itemCount: controller.homeApproveList.length,
+                itemCount: controller.dentistList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.only(
@@ -208,39 +145,55 @@ class Home extends GetView<WebClinicController> {
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.homeApproveList[index].resId,
+                            controller.dentistList[index].dentistId,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 10, context: context),
                           child: Text(
-                            controller.homeApproveList[index].resServiceName,
+                            controller.dentistList[index].dentistName,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            DateFormat.yMMMEd().format(controller
-                                    .homeApproveList[index].resSchedule) +
-                                " " +
-                                controller
-                                    .homeApproveList[index].resScheduleTime,
+                            controller.dentistList[index].dentistContact,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            "P " +
-                                controller
-                                    .homeApproveList[index].resServicePrice,
+                            controller.dentistList[index].dentistEmail,
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        Container(
+                          width: Sizer.width(size: 5, context: context),
+                          child: Text(
+                            controller.dentistList[index].dentistPosition,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         SizedBox(
-                          width: Sizer.width(size: 5, context: context),
+                          height: Sizer.height(size: 3, context: context),
+                        ),
+                        Container(
+                          width: Sizer.width(size: 3, context: context),
+                          child: InkWell(
+                            onTap: () {
+                              controller.removeDentist(
+                                dentistID:
+                                    controller.dentistList[index].dentistId,
+                              );
+                            },
+                            child: Icon(
+                              Icons.clear_rounded,
+                              color: Color.fromARGB(255, 231, 129, 121),
+                            ),
+                          ),
                         )
                       ],
                     ),

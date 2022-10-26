@@ -236,12 +236,15 @@ class DashboardTransactionView extends GetView<DashboardController> {
                             bottom: Sizer.height(context: context, size: 3)),
                         child: InkWell(
                           onTap: () {
-                            Get.to(() => ClientRemarskView(), arguments: {
-                              "clinicID":
-                                  controller.transactions[index].resClientId,
-                              "clientName":
-                                  controller.transactions[index].client_name,
-                            });
+                            if (controller.transactions[index].res_type ==
+                                "isOnline") {
+                              Get.to(() => ClientRemarskView(), arguments: {
+                                "clinicID":
+                                    controller.transactions[index].resClientId,
+                                "clientName":
+                                    controller.transactions[index].client_name,
+                              });
+                            }
                           },
                           child: Row(
                             children: [
@@ -249,14 +252,19 @@ class DashboardTransactionView extends GetView<DashboardController> {
                                   child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        controller.transactions[index].resId,
+                                        controller.transactions[index].resId!,
                                       ))),
                               Expanded(
                                   child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        controller
-                                            .transactions[index].client_name,
+                                        controller.transactions[index]
+                                                    .res_type ==
+                                                "isOnline"
+                                            ? controller.transactions[index]
+                                                .client_name!
+                                            : controller.transactions[index]
+                                                .res_walkin_client_name!,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: Sizer.fontsize(
@@ -266,14 +274,16 @@ class DashboardTransactionView extends GetView<DashboardController> {
                                   child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        controller
-                                            .transactions[index].resServiceName,
+                                        controller.transactions[index]
+                                            .resServiceName!,
                                       ))),
                               Expanded(
                                   child: Container(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(controller
-                                          .transactions[index].clinicName))),
+                                      child: Text(
+                                        controller
+                                            .transactions[index].clinicName!,
+                                      ))),
                               // Expanded(
                               //     child: Container(
                               //         alignment: Alignment.centerLeft,
@@ -285,9 +295,15 @@ class DashboardTransactionView extends GetView<DashboardController> {
                                   child: Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "P " +
-                                            controller
-                                                .transactions[index].resFee,
+                                        controller.transactions[index]
+                                                    .res_type ==
+                                                "isOnline"
+                                            ? "P " +
+                                                controller
+                                                    .transactions[index].resFee!
+                                            : "P " +
+                                                controller.transactions[index]
+                                                    .resServicePrice!,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: Sizer.fontsize(

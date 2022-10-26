@@ -1,12 +1,13 @@
 import 'package:dentalclinic/pages/web_clinic_home/dialog/web_clinic_home_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../configs/class_sizer.dart';
 import '../controller/web_clinic_home_controller.dart';
 
-class Dentist extends GetView<WebClinicController> {
-  const Dentist();
+class NotificationScheduleView extends GetView<WebClinicController> {
+  const NotificationScheduleView();
 
   @override
   Widget build(BuildContext context) {
@@ -23,55 +24,24 @@ class Dentist extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Dentist",
+                "Revisit Schedule",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
-              Row(
-                children: [
-                  Obx(() => controller.isLoadingRefresh.value == false
-                      ? InkWell(
-                          onTap: () async {
-                            controller.isLoadingRefresh.value = true;
-                            await controller.onRefresh();
-                            controller.isLoadingRefresh.value = false;
-                          },
-                          child: Container(
-                              padding: EdgeInsets.all(
-                                  Sizer.width(size: .3, context: context)),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color.fromARGB(255, 146, 192, 230)),
-                              child: Icon(Icons.refresh_rounded)),
-                        )
-                      : SizedBox()),
-                  SizedBox(
-                    width: Sizer.width(size: 1, context: context),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      WebClinicHomeDialog.showCreateDentist(
-                          controller: controller, context: context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(
-                          Sizer.width(size: .3, context: context)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color.fromARGB(255, 146, 192, 230)),
-                      child: Text(
-                        "CREATE",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize:
-                                Sizer.fontsize(size: 15, context: context),
-                            letterSpacing: 2),
-                      ),
-                    ),
-                  ),
-                ],
+              InkWell(
+                onTap: () async {
+                  WebClinicHomeDialog.showCreateNotifSchedule(
+                      context: context, controller: controller);
+                },
+                child: Container(
+                    padding:
+                        EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color.fromARGB(255, 146, 192, 230)),
+                    child: Text("CREATE")),
               ),
             ],
           ),
@@ -85,48 +55,48 @@ class Dentist extends GetView<WebClinicController> {
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "ID",
+                  "Client ID",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 10, context: context),
                 child: Text(
-                  "Name",
+                  "Client name",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "Contact no.",
+                  "Revisit Schedule",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "Email",
+                  "Notified",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               SizedBox(
-                height: Sizer.width(size: 3, context: context),
-              ),
-              Container(
-                width: Sizer.width(size: 3, context: context),
+                width: Sizer.width(size: 6, context: context),
               )
             ],
           ),
+          SizedBox(
+            height: Sizer.height(size: 1, context: context),
+          ),
           Divider(),
           SizedBox(
-            height: Sizer.height(size: .5, context: context),
+            height: Sizer.height(size: 1, context: context),
           ),
           Expanded(
               child: Container(
             child: Obx(
               () => ListView.builder(
-                itemCount: controller.dentistList.length,
+                itemCount: controller.client_notificationSchedule.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.only(
@@ -138,48 +108,38 @@ class Dentist extends GetView<WebClinicController> {
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.dentistList[index].dentistId,
+                            controller
+                                .client_notificationSchedule[index].clientId,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 10, context: context),
                           child: Text(
-                            controller.dentistList[index].dentistName,
+                            controller
+                                .client_notificationSchedule[index].clientName,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.dentistList[index].dentistContact,
+                            DateFormat.yMMMEd().format(controller
+                                .client_notificationSchedule[index]
+                                .notifSchedule),
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.dentistList[index].dentistEmail,
+                            controller
+                                .client_notificationSchedule[index].isNotified,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         SizedBox(
-                          height: Sizer.height(size: 3, context: context),
-                        ),
-                        Container(
-                          width: Sizer.width(size: 3, context: context),
-                          child: InkWell(
-                            onTap: () {
-                              controller.removeDentist(
-                                dentistID:
-                                    controller.dentistList[index].dentistId,
-                              );
-                            },
-                            child: Icon(
-                              Icons.clear_rounded,
-                              color: Color.fromARGB(255, 231, 129, 121),
-                            ),
-                          ),
+                          width: Sizer.width(size: 6, context: context),
                         )
                       ],
                     ),

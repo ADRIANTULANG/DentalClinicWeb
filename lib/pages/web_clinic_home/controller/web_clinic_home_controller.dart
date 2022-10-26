@@ -2,6 +2,7 @@ import 'package:dentalclinic/pages/web_clinic_home/api/web_clinic_home_api.dart'
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../model/web_clinic_home_model.dart';
@@ -9,6 +10,7 @@ import '../model/web_clinic_home_model.dart';
 class WebClinicController extends GetxController {
   RxInt selectedIndex = 0.obs;
   RxString selectedMonth = "Default".obs;
+  RxString selectedDay = "Default".obs;
   RxList<ApprovedList> homeApproveList_masterList = <ApprovedList>[].obs;
   RxList<ApprovedList> homeApproveList = <ApprovedList>[].obs;
 
@@ -24,6 +26,13 @@ class WebClinicController extends GetxController {
   RxList<WalkinList> walkinList = <WalkinList>[].obs;
 
   RxList<AccessLogModel> acccessLogsList = <AccessLogModel>[].obs;
+
+  RxList<NotificationSchedule> client_notificationSchedule =
+      <NotificationSchedule>[].obs;
+
+  RxList<NotificationSchedule> clinic_notificationSchedule =
+      <NotificationSchedule>[].obs;
+
   RxDouble totalAmount = 0.0.obs;
   RxDouble totalwalkinAmount = 0.0.obs;
   Rx<ServicesList> initialValue = ServicesList(
@@ -43,8 +52,32 @@ class WebClinicController extends GetxController {
 
   TextEditingController account_username = TextEditingController();
   TextEditingController account_password = TextEditingController();
+  TextEditingController account_address = TextEditingController();
+  TextEditingController account_contact = TextEditingController();
+  TextEditingController account_email = TextEditingController();
+  TextEditingController account_clinicname = TextEditingController();
 
   RxBool isLoadingRefresh = false.obs;
+
+  RxString initialPosition = "Dentist".obs;
+
+  RxList listofPositions = ['Dentist', 'Secretary', 'Employee'].obs;
+
+  final ImagePicker picker = ImagePicker();
+
+  XFile? imageFile;
+  RxString imagePath = ''.obs;
+
+  List minutes = [];
+  List hourss = [];
+
+  RxString partialselectedAmPm = "AM".obs;
+  RxString partialselectedHour = "01".obs;
+  RxString partialselectedMinutes = "00".obs;
+
+  RxBool isCreatingSchedule = false.obs;
+
+  RxBool isSelectingDaily = false.obs;
 
   @override
   void onInit() async {
@@ -52,13 +85,23 @@ class WebClinicController extends GetxController {
         Get.find<StorageServices>().storage.read('username').toString();
     account_password.text =
         Get.find<StorageServices>().storage.read('password').toString();
-
+    account_clinicname.text =
+        Get.find<StorageServices>().storage.read('clinicName').toString();
+    account_address.text =
+        Get.find<StorageServices>().storage.read('clinicAddress').toString();
+    account_email.text =
+        Get.find<StorageServices>().storage.read('clinicEmail').toString();
+    account_contact.text =
+        Get.find<StorageServices>().storage.read('clinicContactNo').toString();
+    getminutes();
+    getHours();
     await getApproveReservations();
     await getServices();
     await getDentist();
     await getAppointments();
     await getWalkin();
     await getAccesslogs();
+    await getClinicNotificationSchedule();
     super.onInit();
   }
 
@@ -74,6 +117,7 @@ class WebClinicController extends GetxController {
     await getAppointments();
     await getWalkin();
     await getAccesslogs();
+    await getClinicNotificationSchedule();
   }
 
   onRefreshRecord() async {
@@ -113,7 +157,7 @@ class WebClinicController extends GetxController {
     totalAmount.value = 0.0;
     for (var i = 0; i < homeApproveList.length; i++) {
       totalAmount.value =
-          totalAmount.value + double.parse(homeApproveList[i].resServicePrice);
+          totalAmount.value + double.parse(homeApproveList[i].resServicePrice!);
     }
   }
 
@@ -125,6 +169,38 @@ class WebClinicController extends GetxController {
                 .format(homeApproveList_masterList[i].resSchedule)
                 .toString() ==
             month.toString()) {
+          homeApproveList.add(homeApproveList_masterList[i]);
+        } else {}
+      }
+    } else {
+      homeApproveList.assignAll(homeApproveList_masterList);
+    }
+    countTotal();
+  }
+
+  filterRange({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    homeApproveList.clear();
+    for (var i = 0; i < homeApproveList_masterList.length; i++) {
+      if (homeApproveList_masterList[i].resSchedule.isAfter(startDate) ==
+              true &&
+          homeApproveList_masterList[i].resSchedule.isBefore(endDate) == true) {
+        homeApproveList.add(homeApproveList_masterList[i]);
+      } else {}
+    }
+    countTotal();
+  }
+
+  filterDaily() {
+    homeApproveList.clear();
+    var now = DateTime.now();
+    if (isSelectingDaily.value == true) {
+      for (var i = 0; i < homeApproveList_masterList.length; i++) {
+        if (homeApproveList_masterList[i].resSchedule.day == now.day &&
+            homeApproveList_masterList[i].resSchedule.month == now.month &&
+            homeApproveList_masterList[i].resSchedule.year == now.year) {
           homeApproveList.add(homeApproveList_masterList[i]);
         } else {}
       }
@@ -263,12 +339,14 @@ class WebClinicController extends GetxController {
   }
 
   createDentist({
+    required String positioned,
     required String dentist_name,
     required String dentist_contact,
     required String dentist_email,
   }) async {
     Get.back();
     await WebApiClinicApi.createDentist(
+        positioned: positioned,
         dentist_name: dentist_name,
         dentist_contact: dentist_contact,
         dentist_email: dentist_email);
@@ -315,7 +393,12 @@ class WebClinicController extends GetxController {
 
   updateClinicAccount() async {
     var result = await WebApiClinicApi.updateAccount(
-        username: account_username.text, password: account_password.text);
+        username: account_username.text,
+        password: account_password.text,
+        clinicAddress: account_address.text,
+        clinicContact: account_contact.text,
+        clinicEmail: account_email.text,
+        clinicName: account_clinicname.text);
     if (result == true) {
       Get.find<StorageServices>()
           .storage
@@ -323,6 +406,18 @@ class WebClinicController extends GetxController {
       Get.find<StorageServices>()
           .storage
           .write("password", account_password.text);
+      Get.find<StorageServices>()
+          .storage
+          .write("clinicName", account_clinicname.text);
+      Get.find<StorageServices>()
+          .storage
+          .write("clinicAddress", account_address.text);
+      Get.find<StorageServices>()
+          .storage
+          .write("clinicEmail", account_email.text);
+      Get.find<StorageServices>()
+          .storage
+          .write("clinicContactNo", account_contact.text);
       Get.snackbar(
         "Message",
         "Account updated.",
@@ -336,5 +431,112 @@ class WebClinicController extends GetxController {
   getAccesslogs() async {
     var result = await WebApiClinicApi.getAccesslogs();
     acccessLogsList.assignAll(result);
+  }
+
+  getImage() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      imageFile = image;
+      imagePath.value = image.path;
+      print("path: ${imagePath.value}");
+    } else {}
+  }
+
+  createWalkinPatientReservation({
+    required String res_service_name,
+    required String res_service_price,
+    required String res_total_amount,
+    required String res_schedule,
+    required String res_schedule_time,
+    required String res_walkin_client_name,
+  }) async {
+    await WebApiClinicApi.createReservationWalkinPatient(
+        res_service_name: res_service_name,
+        res_service_price: res_service_price,
+        res_total_amount: res_total_amount,
+        res_schedule: res_schedule,
+        res_schedule_time: res_schedule_time,
+        res_walkin_client_name: res_walkin_client_name);
+    await getAppointments();
+    Get.back();
+  }
+
+  getminutes() {
+    int starting = 0;
+    for (var i = 0; i < 60; i++) {
+      String text = "";
+      if (starting.toString().length == 1) {
+        text = "0" + starting.toString();
+      } else {
+        text = starting.toString();
+      }
+      minutes.add(text);
+      starting++;
+    }
+  }
+
+  getHours() {
+    int starting = 1;
+    for (var i = 0; i < 12; i++) {
+      String text = "";
+      if (starting.toString().length == 1) {
+        text = "0" + starting.toString();
+      } else {
+        text = starting.toString();
+      }
+      hourss.add(text);
+      starting++;
+    }
+  }
+
+  getClientNotificationSchedule({required String clientID}) async {
+    var result =
+        await WebApiClinicApi.getClientNotificationSchedule(clientID: clientID);
+    client_notificationSchedule.assignAll(result.reversed.toList());
+  }
+
+  getClinicNotificationSchedule() async {
+    var result = await WebApiClinicApi.getClinicNotificationSchedule();
+    clinic_notificationSchedule.assignAll(result.reversed.toList());
+
+    for (var i = 0; i < clinic_notificationSchedule.length; i++) {
+      if (clinic_notificationSchedule[i].isNotified == "No") {
+        var data = clinic_notificationSchedule[i].notifSchedule;
+        if (DateTime.now().year == data.year &&
+            (data.day - DateTime.now().day) <= 3 &&
+            DateTime.now().month == data.month) {
+          await WebApiClinicApi.updateNotificationStatus(
+              notif_id: clinic_notificationSchedule[i].notifId);
+          await WebApiClinicApi.sendNotificationAutomatic(
+              userToken: clinic_notificationSchedule[i].fcmToken,
+              date: DateFormat.yMMMEd()
+                  .format(clinic_notificationSchedule[i].notifSchedule),
+              clinic: Get.find<StorageServices>()
+                  .storage
+                  .read('clinicName')
+                  .toString());
+          print("must notify");
+        } else {
+          print("must not notify");
+        }
+      } else {}
+    }
+  }
+
+  createClientNotificationSchedule({
+    required String client_name,
+    required String client_id,
+    required String notif_schedule,
+    required String fcmToken,
+  }) async {
+    await WebApiClinicApi.createClientNotificationSchedule(
+        client_name: client_name,
+        client_id: client_id,
+        notif_schedule: notif_schedule,
+        fcmToken: fcmToken);
+    Get.back();
+    getClientNotificationSchedule(clientID: client_id);
+    getClinicNotificationSchedule();
   }
 }

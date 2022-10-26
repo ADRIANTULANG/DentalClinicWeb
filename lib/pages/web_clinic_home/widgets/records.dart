@@ -1,4 +1,5 @@
 import 'package:dentalclinic/pages/web_clinic_home/dialog/web_clinic_home_dialog.dart';
+import 'package:dentalclinic/pages/web_clinic_home/widgets/notification_schedule_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -34,37 +35,64 @@ class Records extends GetView<WebClinicController> {
               ),
               Row(
                 children: [
-                     Obx(
-                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
-                      onTap: ()async {
-                        controller.isLoadingRefresh.value = true;
-                       await controller.onRefreshRecord();
-                        controller.isLoadingRefresh.value = false;
-                      },
-                      child: Container(
-                          padding:
-                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color.fromARGB(255, 146, 192, 230)),
-                          child: Icon(Icons.refresh_rounded)),
-                    ) : SizedBox()
+                  InkWell(
+                    onTap: () async {
+                      await controller.getClientNotificationSchedule(
+                          clientID: controller.selectedClientID.value);
+                      Get.to(() => NotificationScheduleView());
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(
+                            Sizer.width(size: .3, context: context)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromARGB(255, 146, 192, 230)),
+                        child: Text(
+                          "Schedule",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize:
+                                  Sizer.fontsize(size: 15, context: context),
+                              letterSpacing: 2),
+                        )),
                   ),
-                  SizedBox(width: Sizer.width(size: 1, context: context),),
-
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
+                  Obx(() => controller.isLoadingRefresh.value == false
+                      ? InkWell(
+                          onTap: () async {
+                            controller.isLoadingRefresh.value = true;
+                            await controller.onRefreshRecord();
+                            controller.isLoadingRefresh.value = false;
+                          },
+                          child: Container(
+                              padding: EdgeInsets.all(
+                                  Sizer.width(size: .3, context: context)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Color.fromARGB(255, 146, 192, 230)),
+                              child: Icon(Icons.refresh_rounded)),
+                        )
+                      : SizedBox()),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
                   InkWell(
                     onTap: () {
                       controller.sendNotificationRequest();
                     },
                     child: Container(
-                        padding:
-                            EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                        padding: EdgeInsets.all(
+                            Sizer.width(size: .3, context: context)),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Color.fromARGB(255, 146, 192, 230)),
                         child: Icon(Icons.notifications_active_rounded)),
                   ),
-                  SizedBox(width: Sizer.width(size: 1, context: context),),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
                   InkWell(
                     onTap: () {
                       WebClinicHomeDialog.showCreateRemarks(
@@ -74,8 +102,8 @@ class Records extends GetView<WebClinicController> {
                           clientID: controller.selectedClientID.value);
                     },
                     child: Container(
-                      padding:
-                          EdgeInsets.all(Sizer.width(size: .3, context: context)),
+                      padding: EdgeInsets.all(
+                          Sizer.width(size: .3, context: context)),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Color.fromARGB(255, 146, 192, 230)),
@@ -83,7 +111,8 @@ class Records extends GetView<WebClinicController> {
                         "CREATE",
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize: Sizer.fontsize(size: 15, context: context),
+                            fontSize:
+                                Sizer.fontsize(size: 15, context: context),
                             letterSpacing: 2),
                       ),
                     ),

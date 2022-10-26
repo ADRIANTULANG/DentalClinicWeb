@@ -154,28 +154,28 @@ class Accesslog extends GetView<WebClinicController> {
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.acccessLogsList[index].clientName,
+                            controller.acccessLogsList[index].clientName!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.acccessLogsList[index].clientAddress,
+                            controller.acccessLogsList[index].clientAddress!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.acccessLogsList[index].clientEmail,
+                            controller.acccessLogsList[index].clientEmail!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.acccessLogsList[index].clientContactNo,
+                            controller.acccessLogsList[index].clientContactNo!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),

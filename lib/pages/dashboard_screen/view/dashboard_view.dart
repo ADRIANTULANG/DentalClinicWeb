@@ -1,9 +1,9 @@
 import 'package:dentalclinic/configs/class_sizer.dart';
 import 'package:dentalclinic/pages/dashboard_screen/widget/dashboard_clinics_view.dart';
+import 'package:dentalclinic/pages/login_screen/view/login_main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../services/storage_services.dart';
-import '../../login_screen/view/login_screen_view.dart';
 import '../controller/dashboard_controller.dart';
 import '../widget/dashboard_approval_view.dart';
 import '../widget/dashboard_billing_view.dart';
@@ -363,7 +363,7 @@ class DashBoardView extends GetView<DashboardController> {
                       child: InkWell(
                         onTap: () async {
                           await Get.find<StorageServices>().removeCredentials();
-                          Get.offAll(() => LoginScreenView());
+                          Get.offAll(() => LoginMain());
                         },
                         child: Container(
                           height: Sizer.height(context: context, size: 7),

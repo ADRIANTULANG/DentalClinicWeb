@@ -4,4 +4,5 @@ class AppEndpoint {
   static String endPointDomain = "https://dcams.online/dentalClinic/webapi";
   static String endPointDomain_image =
       "https://dcams.online/dentalClinic/images";
+  static String endPointDomain_imageUpload = "https://dcams.online/";
 }

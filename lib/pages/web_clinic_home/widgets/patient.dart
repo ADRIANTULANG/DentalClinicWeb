@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 import '../../../configs/class_sizer.dart';
 import '../controller/web_clinic_home_controller.dart';
 
-class Approved extends GetView<WebClinicController> {
-  const Approved();
+class Patient extends GetView<WebClinicController> {
+  const Patient();
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +25,56 @@ class Approved extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Approved",
+                "Patients",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),
                     letterSpacing: 2),
               ),
-                 Obx(
-                  ()=> controller.isLoadingRefresh.value == false ? InkWell(
-                      onTap: ()async {
-                        controller.isLoadingRefresh.value = true;
-                       await controller.onRefresh();
-                        controller.isLoadingRefresh.value = false;
-                      },
-                      child: Container(
-                          padding:
-                              EdgeInsets.all(Sizer.width(size: .3, context: context)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Color.fromARGB(255, 146, 192, 230)),
-                          child: Icon(Icons.refresh_rounded)),
-                    ) : SizedBox()
+              Row(
+                children: [
+                  Obx(() => controller.isLoadingRefresh.value == false
+                      ? InkWell(
+                          onTap: () async {
+                            controller.isLoadingRefresh.value = true;
+                            await controller.onRefresh();
+                            controller.isLoadingRefresh.value = false;
+                          },
+                          child: Container(
+                              padding: EdgeInsets.all(
+                                  Sizer.width(size: .3, context: context)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Color.fromARGB(255, 146, 192, 230)),
+                              child: Icon(Icons.refresh_rounded)),
+                        )
+                      : SizedBox()),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
                   ),
-    
+                  InkWell(
+                    onTap: () {
+                      WebClinicHomeDialog.showDialogAddWalkIn(
+                          controller: controller, context: context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          Sizer.width(size: .3, context: context)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color.fromARGB(255, 146, 192, 230)),
+                      child: Text(
+                        "CREATE",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize:
+                                Sizer.fontsize(size: 15, context: context),
+                            letterSpacing: 2),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           SizedBox(
@@ -108,16 +135,20 @@ class Approved extends GetView<WebClinicController> {
                         bottom: Sizer.height(size: 1, context: context)),
                     child: InkWell(
                       onTap: () async {
-                        await controller.getClientRemarks(
-                            clientID:
-                                controller.approveList[index].resClientId);
-                        controller.selectedClient.value =
-                            controller.approveList[index].clientName;
-                        controller.selectedClientID.value =
-                            controller.approveList[index].resClientId;
-                        controller.selectedFCMtoken.value =
-                            controller.approveList[index].fcmToken;
-                        Get.to(() => Records());
+                        if (controller.approveList[index].resType! ==
+                            "isWalkin") {
+                        } else {
+                          await controller.getClientRemarks(
+                              clientID:
+                                  controller.approveList[index].resClientId!);
+                          controller.selectedClient.value =
+                              controller.approveList[index].clientName!;
+                          controller.selectedClientID.value =
+                              controller.approveList[index].resClientId!;
+                          controller.selectedFCMtoken.value =
+                              controller.approveList[index].fcmToken!;
+                          Get.to(() => Records());
+                        }
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,14 +157,17 @@ class Approved extends GetView<WebClinicController> {
                           Container(
                             width: Sizer.width(size: 5, context: context),
                             child: Text(
-                              controller.approveList[index].resServiceName,
+                              controller.approveList[index].resServiceName!,
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                           ),
                           Container(
                             width: Sizer.width(size: 10, context: context),
                             child: Text(
-                              controller.approveList[index].clientName,
+                              controller.approveList[index].resType! ==
+                                      "isWalkin"
+                                  ? controller.approveList[index].resWalkinName!
+                                  : controller.approveList[index].clientName!,
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                           ),
@@ -143,7 +177,8 @@ class Approved extends GetView<WebClinicController> {
                               DateFormat.yMMMEd().format(controller
                                       .approveList[index].resSchedule) +
                                   " " +
-                                  controller.approveList[index].resScheduleTime,
+                                  controller
+                                      .approveList[index].resScheduleTime!,
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                           ),
@@ -151,30 +186,39 @@ class Approved extends GetView<WebClinicController> {
                             width: Sizer.width(size: 5, context: context),
                             child: Text(
                               "P " +
-                                  controller.approveList[index].resTotalAmount,
+                                  controller.approveList[index].resTotalAmount!,
                               style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                           ),
                           Row(
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    WebClinicHomeDialog
-                                        .showReminderForNotifications(
-                                            patientname: controller
-                                                .approveList[index].clientName,
-                                            fcmToken: controller
-                                                .approveList[index].fcmToken,
-                                            service: controller
-                                                .approveList[index]
-                                                .resServiceName,
-                                            context: context,
-                                            controller: controller);
-                                  },
-                                  icon: Icon(
-                                    Icons.notifications_active,
-                                    color: Color.fromARGB(255, 240, 167, 162),
-                                  )),
+                              controller.approveList[index].resType! ==
+                                      "isWalkin"
+                                  ? SizedBox(
+                                      width: Sizer.width(
+                                          size: 1.7, context: context),
+                                    )
+                                  : IconButton(
+                                      onPressed: () {
+                                        WebClinicHomeDialog
+                                            .showReminderForNotifications(
+                                                patientname: controller
+                                                    .approveList[index]
+                                                    .clientName!,
+                                                fcmToken: controller
+                                                    .approveList[index]
+                                                    .fcmToken!,
+                                                service: controller
+                                                    .approveList[index]
+                                                    .resServiceName!,
+                                                context: context,
+                                                controller: controller);
+                                      },
+                                      icon: Icon(
+                                        Icons.notifications_active,
+                                        color:
+                                            Color.fromARGB(255, 240, 167, 162),
+                                      )),
                               SizedBox(
                                 width: Sizer.width(size: .5, context: context),
                               ),

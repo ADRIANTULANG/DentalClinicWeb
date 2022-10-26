@@ -268,57 +268,65 @@ String TransactionsToJson(List<Transactions> data) =>
 
 class Transactions {
   Transactions(
-      {required this.resId,
-      required this.resServiceName,
-      required this.resClinicId,
-      required this.resServicePrice,
-      required this.resFee,
-      required this.resTotalAmount,
+      {this.resId,
+      this.resServiceName,
+      this.resClinicId,
+      this.resServicePrice,
+      this.resFee,
+      this.resTotalAmount,
       required this.resSchedule,
-      required this.resScheduleTime,
-      required this.resPaymentGateway,
-      required this.resClientId,
-      required this.resStatus,
-      required this.resRemarks,
-      required this.clinicName,
-      required this.clinicDentistName,
-      required this.client_name});
+      this.resScheduleTime,
+      this.resPaymentGateway,
+      this.resClientId,
+      this.resStatus,
+      this.resRemarks,
+      this.clinicName,
+      this.clinicDentistName,
+      this.res_type,
+      this.res_walkin_client_name,
+      this.client_name});
 
-  String resId;
-  String resServiceName;
-  String resClinicId;
-  String resServicePrice;
-  String resFee;
-  String resTotalAmount;
+  String? resId;
+  String? resServiceName;
+  String? resClinicId;
+  String? resServicePrice;
+  String? resFee;
+  String? resTotalAmount;
   DateTime resSchedule;
-  String resScheduleTime;
-  String resPaymentGateway;
-  String resClientId;
-  String resStatus;
-  String resRemarks;
-  String clinicName;
-  String clinicDentistName;
-  String client_name;
+  String? resScheduleTime;
+  String? resPaymentGateway;
+  String? resClientId;
+  String? resStatus;
+  String? resRemarks;
+  String? res_type;
+  String? res_walkin_client_name;
+  String? clinicName;
+  String? clinicDentistName;
+  String? client_name;
 
   factory Transactions.fromJson(Map<String, dynamic> json) => Transactions(
-        resId: json["res_id"],
-        resServiceName: json["res_service_name"],
-        resClinicId: json["res_clinic_id"],
-        resServicePrice: json["res_service_price"],
-        resFee: json["res_fee"],
-        resTotalAmount: json["res_total_amount"],
+        res_type: json["res_type"] ?? "",
+        res_walkin_client_name: json["res_walkin_client_name"] ?? "",
+        resId: json["res_id"] ?? "",
+        resServiceName: json["res_service_name"] ?? "",
+        resClinicId: json["res_clinic_id"] ?? "",
+        resServicePrice: json["res_service_price"] ?? "",
+        resFee: json["res_fee"] ?? "",
+        resTotalAmount: json["res_total_amount"] ?? "",
         resSchedule: DateTime.parse(json["res_schedule"]),
-        resScheduleTime: json["res_schedule_time"],
-        resPaymentGateway: json["res_payment_gateway"],
-        resClientId: json["res_client_id"],
-        resStatus: json["res_status"],
-        resRemarks: json["res_remarks"],
-        clinicName: json["clinic_name"],
-        clinicDentistName: json["clinic_dentist_name"],
-        client_name: json["client_name"],
+        resScheduleTime: json["res_schedule_time"] ?? "",
+        resPaymentGateway: json["res_payment_gateway"] ?? "",
+        resClientId: json["res_client_id"] ?? "",
+        resStatus: json["res_status"] ?? "",
+        resRemarks: json["res_remarks"] ?? "",
+        clinicName: json["clinic_name"] ?? "",
+        clinicDentistName: json["clinic_dentist_name"] ?? "",
+        client_name: json["client_name"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
+        "res_type": res_type,
+        "res_walkin_client_name": res_walkin_client_name,
         "res_id": resId,
         "res_service_name": resServiceName,
         "res_clinic_id": resClinicId,

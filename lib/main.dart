@@ -1,9 +1,9 @@
+import 'package:dentalclinic/pages/login_screen/view/login_main.dart';
 import 'package:dentalclinic/pages/web_clinic_home/view/web_clinic_home_view.dart';
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'pages/dashboard_screen/view/dashboard_view.dart';
-import 'pages/login_screen/view/login_screen_view.dart';
 import 'package:get/get.dart';
 
 void main() async {
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           ? DashBoardView()
           : Get.find<StorageServices>().storage.read("accountId") != null
               ? WebClinicHomeView()
-              : LoginScreenView(),
+              : LoginMain(),
     );
   }
 }

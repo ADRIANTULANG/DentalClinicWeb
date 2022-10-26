@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import '../../../configs/class_sizer.dart';
 import '../controller/web_clinic_home_controller.dart';
 
-class Walkin extends GetView<WebClinicController> {
-  const Walkin();
+class Dashboard extends GetView<WebClinicController> {
+  const Dashboard();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class Walkin extends GetView<WebClinicController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Walk in",
+                "Dashboard",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Sizer.fontsize(size: 20, context: context),
@@ -51,29 +51,108 @@ class Walkin extends GetView<WebClinicController> {
                   SizedBox(
                     width: Sizer.width(size: 1, context: context),
                   ),
-                  InkWell(
-                    onTap: () {
-                      WebClinicHomeDialog.showDialogAddWalkIn(
-                          controller: controller, context: context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(
-                          Sizer.width(size: .3, context: context)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color.fromARGB(255, 146, 192, 230)),
-                      child: Text(
-                        "CREATE",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize:
-                                Sizer.fontsize(size: 15, context: context),
-                            letterSpacing: 2),
+                  Obx(
+                    () => PopupMenuButton(
+                      child: Container(
+                        padding: EdgeInsets.all(
+                            Sizer.width(size: .3, context: context)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromARGB(255, 146, 192, 230)),
+                        child: Text(
+                          controller.selectedMonth.value,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize:
+                                  Sizer.fontsize(size: 15, context: context),
+                              letterSpacing: 2),
+                        ),
                       ),
+                      itemBuilder: (context) => controller.months
+                          .map((element) => PopupMenuItem<String>(
+                                onTap: () {
+                                  controller.isSelectingDaily(false);
+                                  controller.selectedMonth.value = element;
+                                  for (var i = 0;
+                                      i < controller.months.length;
+                                      i++) {
+                                    if (controller.months[i] == element) {
+                                      controller.filterMonth(month: i);
+                                    }
+                                  }
+                                },
+                                value: element,
+                                child: Text(
+                                  element,
+                                ),
+                              ))
+                          .toList(),
                     ),
                   ),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (controller.isSelectingDaily.value == true) {
+                        controller.isSelectingDaily(false);
+                      } else {
+                        controller.isSelectingDaily(true);
+                      }
+                      controller.filterDaily();
+                      controller.selectedMonth.value = "Default";
+                    },
+                    child: Obx(
+                      () => Container(
+                          padding: EdgeInsets.all(
+                              Sizer.width(size: .3, context: context)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey),
+                              color: controller.isSelectingDaily.value
+                                  ? Colors.white
+                                  : Color.fromARGB(255, 146, 192, 230)),
+                          child: Text(
+                            "Daily",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize:
+                                    Sizer.fontsize(size: 15, context: context),
+                                letterSpacing: 2),
+                          )),
+                    ),
+                  ),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      WebClinicHomeDialog.showDatePickerRange(
+                          context: context, controller: controller);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(
+                            Sizer.width(size: .3, context: context)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.grey),
+                            color: controller.isSelectingDaily.value
+                                ? Colors.white
+                                : Color.fromARGB(255, 146, 192, 230)),
+                        child: Text(
+                          "Range",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              fontSize:
+                                  Sizer.fontsize(size: 15, context: context),
+                              letterSpacing: 2),
+                        )),
+                  ),
+                  SizedBox(
+                    width: Sizer.width(size: 1, context: context),
+                  ),
                 ],
-              ),
+              )
             ],
           ),
           SizedBox(
@@ -86,21 +165,14 @@ class Walkin extends GetView<WebClinicController> {
               Container(
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
-                  "Patient",
+                  "ID",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
-                width: Sizer.width(size: 5, context: context),
+                width: Sizer.width(size: 10, context: context),
                 child: Text(
-                  "Email",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              Container(
-                width: Sizer.width(size: 5, context: context),
-                child: Text(
-                  "Contact no",
+                  "Services",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
@@ -108,13 +180,6 @@ class Walkin extends GetView<WebClinicController> {
                 width: Sizer.width(size: 5, context: context),
                 child: Text(
                   "Date",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              Container(
-                width: Sizer.width(size: 10, context: context),
-                child: Text(
-                  "Service",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
@@ -137,7 +202,7 @@ class Walkin extends GetView<WebClinicController> {
                     ),
                     Obx(
                       () => Text(
-                        "P ${controller.totalwalkinAmount.value}",
+                        "P ${controller.totalAmount.value}",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, color: Colors.red),
                       ),
@@ -158,7 +223,7 @@ class Walkin extends GetView<WebClinicController> {
               child: Container(
             child: Obx(
               () => ListView.builder(
-                itemCount: controller.walkinList.length,
+                itemCount: controller.homeApproveList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.only(
@@ -170,45 +235,34 @@ class Walkin extends GetView<WebClinicController> {
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            controller.walkinList[index].patientName,
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Container(
-                          width: Sizer.width(size: 5, context: context),
-                          child: Text(
-                            controller.walkinList[index].email,
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Container(
-                          width: Sizer.width(size: 5, context: context),
-                          child: Text(
-                            controller.walkinList[index].contactno,
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                        Container(
-                          width: Sizer.width(size: 5, context: context),
-                          child: Text(
-                            DateFormat.yMMMEd()
-                                    .format(controller.walkinList[index].date) +
-                                " " +
-                                controller.walkinList[index].time,
+                            controller.homeApproveList[index].resId!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 10, context: context),
                           child: Text(
-                            controller.walkinList[index].serviceName,
+                            controller.homeApproveList[index].resServiceName!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           width: Sizer.width(size: 5, context: context),
                           child: Text(
-                            "P " + controller.walkinList[index].servicePrice,
+                            DateFormat.yMMMEd().format(controller
+                                    .homeApproveList[index].resSchedule) +
+                                " " +
+                                controller
+                                    .homeApproveList[index].resScheduleTime!,
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        Container(
+                          width: Sizer.width(size: 5, context: context),
+                          child: Text(
+                            "P " +
+                                controller
+                                    .homeApproveList[index].resServicePrice!,
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                         ),
