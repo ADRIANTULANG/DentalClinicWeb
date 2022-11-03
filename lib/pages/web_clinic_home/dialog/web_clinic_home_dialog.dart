@@ -1425,4 +1425,209 @@ class WebClinicHomeDialog {
       ),
     );
   }
+
+  static showReminder({
+    required BuildContext context,
+  }) {
+    Get.dialog(AlertDialog(
+      content: Container(
+        height: Sizer.height(size: 14, context: context),
+        width: Sizer.width(size: 20, context: context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Reminder",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5,
+                  fontSize: Sizer.fontsize(size: 15, context: context)),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 1, context: context),
+            ),
+            Text(
+              "Your dental account is currently inactive.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.5,
+                  fontSize: Sizer.fontsize(size: 11, context: context)),
+            ),
+            Text(
+              "Please subscribe to our system. ",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.5,
+                  fontSize: Sizer.fontsize(size: 11, context: context)),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 1, context: context),
+            ),
+            Container(
+                width: Sizer.width(size: 20, context: context),
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                    onPressed: () {
+                      Get.back();
+                      Future.delayed(Duration(seconds: 1), () {
+                        showSubscriptionScreen(
+                          context: context,
+                        );
+                      });
+                    },
+                    child: Text(
+                      "Subscribe now!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.5,
+                          color: Colors.red,
+                          fontSize: Sizer.fontsize(size: 12, context: context)),
+                    ))),
+          ],
+        ),
+      ),
+    ));
+  }
+
+  static showSubscriptionScreen({
+    required BuildContext context,
+  }) {
+    Get.dialog(AlertDialog(
+      content: Container(
+        color: Colors.white,
+        height: Sizer.height(size: 35, context: context),
+        width: Sizer.width(size: 20, context: context),
+        child: Column(
+          children: [
+            Text(
+              "Subscription",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5,
+                  fontSize: Sizer.fontsize(size: 15, context: context)),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 1, context: context),
+            ),
+            Text(
+              "Activate your account.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.5,
+                  fontSize: Sizer.fontsize(size: 11, context: context)),
+            ),
+            Text(
+              "Please select payment option. ",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.5,
+                  fontSize: Sizer.fontsize(size: 11, context: context)),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 1, context: context),
+            ),
+            SizedBox(
+              height: Sizer.height(size: 2, context: context),
+            ),
+            Row(
+              children: [
+                Obx(
+                  () => Checkbox(
+                      value: Get.find<WebClinicController>().isCheckGcash.value,
+                      onChanged: (value) {
+                        if (Get.find<WebClinicController>()
+                                .isCheckGcash
+                                .value ==
+                            true) {
+                          Get.find<WebClinicController>().isCheckGcash.value =
+                              false;
+                          Get.find<WebClinicController>()
+                              .isSelectedPaymentGateway
+                              .value = "";
+                        } else {
+                          Get.find<WebClinicController>().isCheckGcash.value =
+                              true;
+                          Get.find<WebClinicController>()
+                              .isSelectedPaymentGateway
+                              .value = "Gcash";
+                        }
+                        Get.find<WebClinicController>().isPaymaya.value = false;
+                      }),
+                ),
+                Container(
+                  height: Sizer.height(size: 10, context: context),
+                  child: Image.asset("assets/images/gcashlogo.png"),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Obx(
+                  () => Checkbox(
+                      value: Get.find<WebClinicController>().isPaymaya.value,
+                      onChanged: (value) {
+                        if (Get.find<WebClinicController>().isPaymaya.value ==
+                            true) {
+                          Get.find<WebClinicController>().isPaymaya.value =
+                              false;
+                          Get.find<WebClinicController>()
+                              .isSelectedPaymentGateway
+                              .value = "";
+                        } else {
+                          Get.find<WebClinicController>().isPaymaya.value =
+                              true;
+                          Get.find<WebClinicController>()
+                              .isSelectedPaymentGateway
+                              .value = "Paymaya";
+                        }
+                        Get.find<WebClinicController>().isCheckGcash.value =
+                            false;
+                      }),
+                ),
+                SizedBox(
+                  width: Sizer.width(size: 1.5, context: context),
+                ),
+                Container(
+                  height: Sizer.height(size: 10, context: context),
+                  child: Image.asset("assets/images/paymaya.png"),
+                ),
+              ],
+            ),
+            Container(
+                width: Sizer.width(size: 20, context: context),
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                    onPressed: () {
+                      if (Get.find<WebClinicController>().isCheckGcash.value ==
+                              false &&
+                          Get.find<WebClinicController>().isPaymaya.value ==
+                              false) {
+                        Get.snackbar(
+                            "Message", "Please Select a Payment Options",
+                            colorText: Colors.white,
+                            backgroundColor: Color.fromARGB(255, 136, 205, 236),
+                            snackPosition: SnackPosition.TOP,
+                            duration: Duration(seconds: 3));
+                      } else {
+                        Get.find<WebClinicController>()
+                            .updateClinicSubscription();
+                      }
+                    },
+                    child: Text(
+                      "Subscribe now!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.5,
+                          color: Colors.red,
+                          fontSize: Sizer.fontsize(size: 12, context: context)),
+                    ))),
+          ],
+        ),
+      ),
+    ));
+  }
 }

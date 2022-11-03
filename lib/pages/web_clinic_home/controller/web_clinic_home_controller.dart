@@ -1,10 +1,12 @@
 import 'package:dentalclinic/pages/web_clinic_home/api/web_clinic_home_api.dart';
+import 'package:dentalclinic/pages/web_clinic_home/dialog/web_clinic_home_dialog.dart';
 import 'package:dentalclinic/services/storage_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../login_screen/view/login_main.dart';
 import '../model/web_clinic_home_model.dart';
 
 class WebClinicController extends GetxController {
@@ -79,6 +81,10 @@ class WebClinicController extends GetxController {
 
   RxBool isSelectingDaily = false.obs;
 
+  RxBool isCheckGcash = false.obs;
+  RxBool isPaymaya = false.obs;
+  RxString isSelectedPaymentGateway = "".obs;
+
   @override
   void onInit() async {
     account_username.text =
@@ -102,6 +108,9 @@ class WebClinicController extends GetxController {
     await getWalkin();
     await getAccesslogs();
     await getClinicNotificationSchedule();
+    getSubscriptionStatus();
+    getSubscriptionDates();
+
     super.onInit();
   }
 
@@ -538,5 +547,78 @@ class WebClinicController extends GetxController {
     Get.back();
     getClientNotificationSchedule(clientID: client_id);
     getClinicNotificationSchedule();
+  }
+
+  bool isAlreadyRemind = false;
+  RxString expirationDate = "".obs;
+  RxString subscriptionStatus = "".obs;
+
+  getSubscriptionStatus() async {
+    var result = await WebApiClinicApi.getSubscritpionStatus();
+    if (result == "Unpaid") {
+      expirationDate.value = "Account Inactive";
+      isAlreadyRemind = true;
+      subscriptionStatus.value = "Unpaid";
+      WebClinicHomeDialog.showReminder(context: Get.context!);
+    } else if (result == false) {
+    } else {}
+  }
+
+  getSubscriptionDates() async {
+    List<ClinicSubscriptionDates> result =
+        await WebApiClinicApi.getClinicSubscriptionDates();
+    if (result.isEmpty) {
+      expirationDate.value = "Account Inactive";
+    } else {
+      bool isExpired = result[0].subsExpirationDate.isBefore(DateTime.now());
+      if (subscriptionStatus.value == "Unpaid") {
+        expirationDate.value = "Account Inactive";
+      } else {
+        expirationDate.value = "Account Expiration Date: " +
+            DateFormat.yMMMMd().format(result[0].subsExpirationDate);
+      }
+      if (isExpired == true) {
+        await WebApiClinicApi.updateClinicStatusToExpired();
+        subscriptionStatus.value = "Unpaid";
+        if (isAlreadyRemind == false) {
+          expirationDate.value = "Account Inactive";
+          Get.snackbar("Message",
+              "Subscription Expired. Please subscribe again to activate your account. Thank you!",
+              colorText: Colors.white,
+              backgroundColor: Color.fromARGB(255, 172, 213, 233),
+              snackPosition: SnackPosition.TOP,
+              duration: Duration(seconds: 4));
+        }
+      } else {}
+      // if(isExpired)
+    }
+  }
+
+  updateClinicSubscription() async {
+    // isSubscribing(true);
+    DateTime exp = DateTime.now().add(Duration(days: 30));
+    DateTime pur = DateTime.now();
+
+    bool isSuccess = await WebApiClinicApi.updateClinicSubscription(
+        amount: 1500.toString(),
+        sub_expiration_date: exp.toString(),
+        sub_purchased_date: pur.toString());
+
+    if (isSuccess == true) {
+      await Get.find<StorageServices>().removeCredentials();
+      Get.offAll(() => LoginMain());
+      Get.snackbar("Message", "Account Succesfully Activated. Please log in",
+          colorText: Colors.white,
+          backgroundColor: Color.fromARGB(255, 158, 210, 235),
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 30));
+    } else {
+      Get.snackbar("Message", "Sorry.. Please try again later",
+          colorText: Colors.white,
+          backgroundColor: Color.fromARGB(255, 158, 210, 235),
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 30));
+    }
+    // isSubscribing(false);
   }
 }

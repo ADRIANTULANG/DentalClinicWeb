@@ -453,3 +453,43 @@ class NotificationSchedule {
         "fcmToken": fcmToken,
       };
 }
+
+List<ClinicSubscriptionDates> clinicSubscriptionDatesFromJson(String str) =>
+    List<ClinicSubscriptionDates>.from(
+        json.decode(str).map((x) => ClinicSubscriptionDates.fromJson(x)));
+
+String clinicSubscriptionDatesToJson(List<ClinicSubscriptionDates> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ClinicSubscriptionDates {
+  ClinicSubscriptionDates({
+    required this.subsId,
+    required this.subsClinicId,
+    required this.subsAmount,
+    required this.subsExpirationDate,
+    required this.subsPurchasedDate,
+  });
+
+  String subsId;
+  String subsClinicId;
+  String subsAmount;
+  DateTime subsExpirationDate;
+  DateTime subsPurchasedDate;
+
+  factory ClinicSubscriptionDates.fromJson(Map<String, dynamic> json) =>
+      ClinicSubscriptionDates(
+        subsId: json["subs_id"],
+        subsClinicId: json["subs_clinic_id"],
+        subsAmount: json["subs_amount"],
+        subsExpirationDate: DateTime.parse(json["subs_expiration_date"]),
+        subsPurchasedDate: DateTime.parse(json["subs_purchased_date"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "subs_id": subsId,
+        "subs_clinic_id": subsClinicId,
+        "subs_amount": subsAmount,
+        "subs_expiration_date": subsExpirationDate.toIso8601String(),
+        "subs_purchased_date": subsPurchasedDate.toIso8601String(),
+      };
+}

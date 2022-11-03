@@ -136,7 +136,7 @@ class LoginApi {
         "Clinic Details Error: Timeout",
         "Oops, something went wrong. Please try again later.",
         colorText: Colors.white,
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Color.fromARGB(255, 204, 231, 243),
         snackPosition: SnackPosition.BOTTOM,
       );
       return [];
@@ -146,7 +146,7 @@ class LoginApi {
         "Clinic Details Error: Socket",
         "Oops, something went wrong. Please try again later.",
         colorText: Colors.white,
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Color.fromARGB(255, 204, 231, 243),
         snackPosition: SnackPosition.BOTTOM,
       );
       return [];
@@ -155,7 +155,7 @@ class LoginApi {
         "Clinic Details Error",
         "Oops, something went wrong. Please try again later.",
         colorText: Colors.white,
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Color.fromARGB(255, 204, 231, 243),
         snackPosition: SnackPosition.BOTTOM,
       );
       return [];
